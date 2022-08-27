@@ -1,7 +1,14 @@
 {
     "name": "sshonix",
     "version": "0.1.0",
-    "description": "Hi-End SSH & SFTP client. Focused on UX/UI experience.",
+    "description": "Hi-End SSH & SFTP client. Focused on UX/UI experience and Performance.",
+    "keywords": [
+        "ssh",
+        "terminal",
+        "sftp",
+        "ssh-client",
+        "sftp-client"
+    ],
     "main": "dist/main/index.cjs",
     "scripts": {
         "dev": "node scripts/watch.mjs",
