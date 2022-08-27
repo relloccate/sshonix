@@ -5,7 +5,8 @@
 
   <img src="./assets/screens/1.png">
   <img src="./assets/screens/2.png">
-
+  <img src="./assets/screens/3.png">
+  
 # Features
 
 -   **Terminal**
@@ -53,6 +54,5 @@ If you noticed abnormal behavior or other bug - please, create an issue.
 
 
 # Other Screens
-  <img src="./assets/screens/3.png">
   <img src="./assets/screens/4.png">
   <img src="./assets/screens/5.png">
