@@ -3,17 +3,9 @@
 </p>
 </br>
 
-<kbd>
   <img src="./assets/screens/1.png">
-</kbd>
-
-<kbd>
   <img src="./assets/screens/2.png">
-</kbd>
-
-<kbd>
   <img src="./assets/screens/3.png">
-</kbd>
 
 ## WINDOWS ONLY!
 
@@ -52,10 +44,5 @@
 
 # Other Screens
 
-<kbd>
   <img src="./assets/screens/4.png">
-</kbd>
-
-<kbd>
   <img src="./assets/screens/5.png">
-</kbd>
