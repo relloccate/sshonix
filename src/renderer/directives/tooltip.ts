@@ -1,3 +1,7 @@
+// @ts-nocheck
+
+import { DirectiveBinding } from 'vue';
+
 export default {
     handleLeave() {
         const tooltipElement = document.getElementById('tooltip');
@@ -6,7 +10,7 @@ export default {
             tooltipElement.remove();
         }
     },
-    mounted(el: HTMLElement, { value, dir, modifiers }) {
+    mounted(el: HTMLElement, { value, dir, modifiers }: DirectiveBinding) {
         dir.handleHover = () => {
             const color = Object.keys(modifiers)[0];
 
@@ -18,7 +22,7 @@ export default {
             tooltipElement.className = `tooltip ${color}`;
             tooltipElement.innerHTML = value;
 
-            appElement.appendChild(tooltipElement);
+            appElement?.appendChild(tooltipElement);
 
             const tooltipElementCoords = tooltipElement.getBoundingClientRect();
             const offset = tooltipElementCoords.width / 2;
@@ -39,7 +43,7 @@ export default {
 
         el.addEventListener('mouseenter', dir.handleHover, false);
     },
-    beforeUnmount(el: HTMLElement, { dir }) {
+    beforeUnmount(el: HTMLElement, { dir }: DirectiveBinding) {
         dir.handleLeave();
 
         el.removeEventListener('mouseleave', dir.handleLeave);

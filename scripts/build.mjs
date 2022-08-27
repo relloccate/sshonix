@@ -17,14 +17,13 @@ console.log('BUILDING APP');
 await electronBuild({
     config: {
         files: ['dist'],
-        extraFiles: ['src/main/assets'],
-        appId: 'YourAppID',
+        // appId: 'YourAppID',
         asar: true,
         directories: {
             output: 'dist/release/${version}'
         },
         win: {
-            icon: 'src/main/assets/1.ico',
+            icon: '/assets/LOGO.ico',
             target: [
                 {
                     target: 'nsis',

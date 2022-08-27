@@ -1,4 +1,5 @@
 import StoreActiveTerminals from 'front/store/StoreActiveTerminals';
+import { HOME_DIR } from 'core/Constants';
 
 export const initializeLocalTerminal = () => {
     const ts = Date.now();
@@ -6,7 +7,7 @@ export const initializeLocalTerminal = () => {
     StoreActiveTerminals.add({
         added: ts,
         title: 'LOCAL',
-        cwd: process.env.HOME ? process.env.HOME : '',
+        cwd: HOME_DIR,
         type: 'local',
         active: true,
         channel: ts

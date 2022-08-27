@@ -165,7 +165,7 @@ export const getQuickEdit = async function (this: any) {
     });
 };
 
-export const writeQuickEdit = async (to, data) => {
+export const writeQuickEdit = async (to: string, data: string) => {
     const channel = getActiveChannel();
 
     return await ipcRenderer.invoke('sftp:edit:write', {

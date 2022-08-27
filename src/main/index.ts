@@ -76,11 +76,6 @@ app.commandLine.appendSwitch('force_high_performance_gpu');
         win.webContents.send('window:maximize');
     });
 
-    win.on('close', (event: Event) => {
-        event.preventDefault();
-        if (win) win.hide();
-    });
-
     win.once('ready-to-show', () => {
         win.show();
     });
