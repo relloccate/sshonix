@@ -7,8 +7,6 @@
   <img src="./assets/screens/2.png">
   <img src="./assets/screens/3.png">
 
-## WINDOWS ONLY!
-
 # Features
 
 -   **Terminal**
@@ -26,7 +24,8 @@
     -   `RENAME`
     -   `COPY PATHS` - Full absolute paths
     -   `COPY NAMES` - Only file names
-
+-   **Sftp Transfers** - Displays current transfers
+-   **Sftp Search** - Regex search in current directory
 -   **Hotkeys**
 
     -   **Sftp**
@@ -38,9 +37,21 @@
         -   `CTRL + CLICK` - Multiple select by one
     -   **Main**
         -   `CTRL + Mouse Center Click` - Open/Hide menu
-
--   **Sftp Search** - Regex search in current directory
 -   **Updates** - Update notifications.
+
+## You should know
+**WINDOWS ONLY!**  
+</br>
+The project is new. A lot of things haven't been done yet.  
+More attention was paid to the SFTP, the terminal has a low level of development.  
+If you noticed abnormal behavior or other bug - please, create an issue.
+
+### SFTP
+- **SFTP transfers are not cancelable (yet)**  
+- **If you uploading files they rewrite existing (is the same files are exists in dir)**  
+- **SUPER FAST SFTP - UPLOADING/DOWNLOADING**  
+- **Watching dirs/remove/delete and UPLADING/DOWNLOADING has a different connections, so by this way we have no browse lags**  
+
 
 # Other Screens
 
