@@ -1,0 +1,43 @@
+{
+    "name": "sshonix",
+    "version": "0.1.0",
+    "description": "Hi-End SSH & SFTP client. Focused on UX/UI experience.",
+    "main": "dist/main/index.cjs",
+    "scripts": {
+        "dev": "node scripts/watch.mjs",
+        "rebuild": "electron-rebuild -f -w node-pty",
+        "xxxx-postinstall": "electron-builder install-app-deps",
+        "pack-app": "vue-tsc --noEmit --p src/renderer/tsconfig.json && node scripts/build.mjs"
+    },
+    "engines": {
+        "node": ">=16.0.0"
+    },
+    "license": "MIT",
+    "devDependencies": {
+        "@types/ssh2": "^1.11.5",
+        "@types/ssh2-sftp-client": "^7.1.0",
+        "@vitejs/plugin-vue": "^3.0.1",
+        "electron": "19.0.10",
+        "electron-builder": "^23.1.0",
+        "electron-devtools-installer": "^3.2.0",
+        "electron-rebuild": "^3.2.8",
+        "postcss-color-mod-function": "^3.0.3",
+        "postcss-preset-env": "^7.7.2",
+        "typescript": "^4.7.4",
+        "vite": "^3.0.4",
+        "vite-plugin-electron": "^0.8.3",
+        "vite-plugin-electron-renderer": "^0.8.1",
+        "vite-svg-loader": "^3.4.0",
+        "vue-tsc": "^0.39.2"
+    },
+    "dependencies": {
+        "@imengyu/vue3-context-menu": "^1.0.9",
+        "node-pty": "^0.10.1",
+        "pinia": "^2.0.17",
+        "ssh2": "^1.11.0",
+        "ssh2-sftp-client": "^9.0.3",
+        "vue": "^3.2.37",
+        "xterm": "^4.19.0",
+        "xterm-addon-web-links": "^0.6.0"
+    }
+}

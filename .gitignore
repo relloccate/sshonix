@@ -1,0 +1,5 @@
+node_modules
+dist
+build
+bin
+unused_trash

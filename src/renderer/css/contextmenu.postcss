@@ -1,0 +1,166 @@
+/* https://github.com/imengyu/vue3-context-menu/blob/main/lib/vue3-context-menu.css */
+
+.mx-context-menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    z-index: 15;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    background-color: var(--main-color);
+    background-image: linear-gradient(129deg, color-mod(var(--grey-color) a(1%)), color-mod(var(--main-color) a(1%)));
+    border: 1px solid var(--main-color);
+}
+/* .mx-context-menu {
+    display: inline-block;
+    overflow: visible;
+    position: absolute;
+    background-color: color-mod(var(--dark-white-color) a(5%));
+
+    border-radius: 10px;
+    padding: 12px 0;
+    opacity: 0;
+    transition: all 0.3s var(--ease);
+} */
+.mx-context-menu.ready {
+    opacity: 1;
+}
+.mx-context-menu-items {
+    position: relative;
+    overflow: hidden;
+    overflow-y: scroll;
+
+    & > div {
+        &:last-child .mx-context-menu-item {
+            border-bottom: none;
+        }
+    }
+}
+.mx-context-menu-items::-webkit-scrollbar {
+    display: none;
+}
+.mx-context-menu-updown {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 10px;
+    border-radius: 10px;
+    background-color: #fff;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+}
+/* .mx-context-menu-updown:hover {
+    background-color: #e2e0e0;
+}
+.mx-context-menu-updown:active {
+    background-color: #c9c8c8;
+} */
+.mx-context-menu-updown .mx-right-arrow {
+    display: inline-block;
+    position: absolute;
+    height: 12px;
+    left: 50%;
+    top: 0;
+}
+.mx-context-menu-updown.up {
+    top: 0;
+}
+.mx-context-menu-updown.down {
+    bottom: 0;
+}
+.mx-context-menu-updown.up .mx-right-arrow {
+    transform: translateX(-50%) rotate(270deg);
+}
+.mx-context-menu-updown.down .mx-right-arrow {
+    transform: translateX(-50%) rotate(90deg);
+}
+.mx-context-menu-item {
+    display: block;
+    user-select: none;
+    position: relative;
+    cursor: pointer;
+    border-bottom: 1px solid var(--back-color);
+    margin: 0;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.85em;
+    font-weight: 600;
+    color: var(--back-color);
+    background-color: var(--main-color);
+    background-image: linear-gradient(129deg, color-mod(var(--grey-color) a(1%)), color-mod(var(--main-color) a(1%)));
+}
+.mx-context-menu-item:hover {
+    background-color: var(--back-color);
+    color: var(--main-color);
+}
+
+.mx-context-menu-item:active {
+    background-color: color-mod(var(--main-color) a(40%));
+    color: var(--back-color);
+}
+
+.mx-context-menu-item.disabled {
+    cursor: not-allowed;
+}
+
+.mx-context-menu-item.disabled:active,
+.mx-context-menu-item.disabled:hover {
+    background-color: transparent;
+}
+.mx-context-menu-item.disabled .text {
+    color: #9f9f9f;
+}
+
+.mx-context-menu-item + .mx-context-menu-item-sperator {
+    padding-top: 0.5em;
+    background-color: var(--back-color);
+    border: none;
+}
+
+/* .mx-context-menu-item-sperator {
+    display: block;
+    padding: 2px 0;
+    background-color: var(--back-color);
+} */
+.mx-context-menu-item-sperator:after {
+    display: block;
+    content: '';
+    background-color: var(--main-color);
+    height: 1px;
+}
+.mx-context-menu-item .text {
+    /* color: #2e2e2e; */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.mx-context-menu-item .text .icon {
+    display: inline-block;
+    width: 26px;
+    font-size: 16px;
+    color: #636363;
+}
+.mx-context-menu-item .text span {
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 16px;
+}
+.mx-context-menu-item .text .mx-right-arrow {
+    position: absolute;
+    display: inline-block;
+    right: 2px;
+    top: 50%;
+    margin-top: -5px;
+}
+.mx-right-arrow {
+    width: 14px;
+    height: 14px;
+    background-image: url('data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iaWNvbiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNTAiIGhlaWdodD0iNTAiPjxkZWZzPjxzdHlsZS8+PC9kZWZzPjxwYXRoIGQ9Ik0zMDcuMDE4IDQ5LjQ0NWMxMS41MTcgMCAyMy4wMzIgNC4zOTQgMzEuODE5IDEzLjE4TDc1Ni40MDQgNDgwLjE4YTQ1IDQ1IDAgMDEwIDYzLjY0TDMzOC44MzggOTYxLjM3NmMtMTcuNTc0IDE3LjU3My00Ni4wNjUgMTcuNTczLTYzLjY0LS4wMDEtMTcuNTczLTE3LjU3My0xNy41NzMtNDYuMDY1LjAwMS02My42NEw2NjAuOTQ0IDUxMiAyNzUuMTk4IDEyNi4yNjVjLTE3LjU3NC0xNy41NzMtMTcuNTc0LTQ2LjA2Ni0uMDAxLTYzLjY0IDguNzg4LTguNzg2IDIwLjMwNC0xMy4xOCAzMS44MjEtMTMuMTh6Ii8+PC9zdmc+');
+    background-size: 12px;
+    background-repeat: no-repeat;
+}
