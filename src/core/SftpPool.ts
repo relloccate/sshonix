@@ -56,8 +56,6 @@ class SftpPool {
             try {
                 return await this.runned[channel].writeQuickEdit(to, data);
             } catch (error: any) {
-                console.log(error.message);
-
                 this.webContentsInstance?.send('sftp:message', error.message);
             }
         });
@@ -65,7 +63,7 @@ class SftpPool {
         ipcMain.handle('sftp:download', async (event, { channel, to, items }) => {
             const connectOptions = this.runned[channel].connectOptions;
             const transfer = new SftpTransfer(connectOptions);
-            const watchTransfer = this.watcher.watchTransfer({ channel, type: 'download' }, transfer, this.webContentsInstance);
+            const addedToWatcher = this.watcher.add({ channel, type: 'download' }, transfer, this.webContentsInstance);
 
             try {
                 await transfer.connect();
@@ -75,15 +73,15 @@ class SftpPool {
             } catch (error: any) {
                 this.webContentsInstance?.send('sftp:message', error.message);
             } finally {
-                watchTransfer();
-                await transfer.close();
+                this.watcher.done(addedToWatcher, this.webContentsInstance);
+                return true;
             }
         });
 
         ipcMain.handle('sftp:upload', async (event, { channel, to, items }) => {
             const connectOptions = this.runned[channel].connectOptions;
             const transfer = new SftpTransfer(connectOptions);
-            const watchTransfer = this.watcher.watchTransfer({ channel, type: 'upload' }, transfer, this.webContentsInstance);
+            const addedToWatcher = this.watcher.add({ channel, type: 'upload' }, transfer, this.webContentsInstance);
 
             try {
                 await transfer.connect();
@@ -93,8 +91,19 @@ class SftpPool {
             } catch (error: any) {
                 this.webContentsInstance?.send('sftp:message', error.message);
             } finally {
-                watchTransfer();
-                await transfer.close();
+                this.watcher.done(addedToWatcher, this.webContentsInstance);
+                return true;
+            }
+        });
+
+        ipcMain.handle('sftp:stop', async (event, started) => {
+            try {
+                this.watcher.done(started, this.webContentsInstance);
+                this.webContentsInstance?.send('sftp:message', 'Uploaded');
+            } catch (error: any) {
+                this.webContentsInstance?.send('sftp:message', error.message);
+            } finally {
+                return true;
             }
         });
 
