@@ -12,20 +12,20 @@
                 >
             </div>
             <div class="releases">
-                <FooterUpdatesRelease v-for="release in getUpdatableReleases" :key="release.id" :release="release" />
+                <UpdatesRelease v-for="release in getUpdatableReleases" :key="release.id" :release="release" />
             </div>
         </div>
     </div>
 </template>
 <script>
-import FooterUpdatesRelease from 'front/components/footer/FooterUpdatesRelease.vue';
+import UpdatesRelease from 'front/components/footer/UpdatesRelease.vue';
 import StoreUpdates from 'front/store/StoreUpdates';
 import { storeToRefs } from 'pinia';
 
 import UpdateSvg from 'front/svg/update.svg';
 
 export default {
-    components: { FooterUpdatesRelease, UpdateSvg },
+    components: { UpdatesRelease, UpdateSvg },
     setup() {
         const { getUpdatableReleases, isHasImportant } = storeToRefs(StoreUpdates);
 

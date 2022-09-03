@@ -24,6 +24,7 @@
                 <div class="percent">{{ percent }}%</div>
             </div>
         </div>
+        <button @click="stop" v-if="this.details.data.status !== 'done'">CLOSE</button>
     </div>
 </template>
 <script>
@@ -120,6 +121,13 @@ export default {
         font-weight: 600;
         text-transform: capitalize;
         text-align: center;
+    }
+
+    & button {
+        width: auto;
+        margin: auto;
+
+        border-radius: 0.75rem 0.75rem 0.25rem 0.25rem;
     }
 
     & .in-progress {

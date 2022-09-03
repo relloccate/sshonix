@@ -69,6 +69,8 @@ class SftpPool {
                 await transfer.connect();
                 await transfer.download(to, items);
 
+                //FIXME: if user stop the transfer it never be reached?
+
                 this.webContentsInstance?.send('sftp:message', 'Downloaded');
             } catch (error: any) {
                 this.webContentsInstance?.send('sftp:message', error.message);
@@ -87,6 +89,8 @@ class SftpPool {
                 await transfer.connect();
                 await transfer.upload(to, items);
 
+                //FIXME: if user stop the transfer it never be reached?
+
                 this.webContentsInstance?.send('sftp:message', 'Uploaded');
             } catch (error: any) {
                 this.webContentsInstance?.send('sftp:message', error.message);
@@ -99,7 +103,7 @@ class SftpPool {
         ipcMain.handle('sftp:stop', async (event, started) => {
             try {
                 this.watcher.done(started, this.webContentsInstance);
-                this.webContentsInstance?.send('sftp:message', 'Uploaded');
+                this.webContentsInstance?.send('sftp:message', 'Stopped');
             } catch (error: any) {
                 this.webContentsInstance?.send('sftp:message', error.message);
             } finally {
