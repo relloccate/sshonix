@@ -28,6 +28,7 @@
 </template>
 <script>
 import StoreActiveSftpTransfers from 'front/store/StoreActiveSftpTransfers';
+import { stopTransfer } from 'front/misc/SftpEvents';
 import { storeToRefs } from 'pinia';
 
 import DownloadSvg from 'front/svg/download.svg';
@@ -55,6 +56,9 @@ export default {
         };
     },
     methods: {
+        stop() {
+            stopTransfer(this.details.data.started);
+        },
         onClick({ status, started }) {
             if (status !== 'done') return;
             StoreActiveSftpTransfers.remove({ started });

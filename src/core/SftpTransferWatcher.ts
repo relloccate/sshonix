@@ -44,7 +44,7 @@ export default class SftpTransferWatcher {
         });
     }
 
-    watchTransfer = ({ channel, type }: Pick<PiniaActiveSftpTransfersItem, 'channel' | 'type'>, instance: SftpTransfer, webContents: any) => {
+    add = ({ channel, type }: Pick<PiniaActiveSftpTransfersItem, 'channel' | 'type'>, instance: SftpTransfer, webContents: any) => {
         const started = Date.now();
 
         this.runned[started] = {
@@ -64,15 +64,23 @@ export default class SftpTransferWatcher {
             }, 250);
         }
 
-        return () => {
-            this.sendTransferUpdate(started, webContents);
-            this.sendTransferDone(started, webContents);
-            delete this.runned[started];
+        return started;
+    };
 
-            if (Object.keys(this.runned).length === 0) {
-                clearInterval(this.transfersWatcher);
-                this.transfersWatcher = undefined;
-            }
-        };
+    done = (started: PiniaActiveSftpTransfersItem['started'], webContents: any) => {
+        if (!this.runned[started]) return;
+
+        this.sendTransferUpdate(started, webContents);
+        this.sendTransferDone(started, webContents);
+
+        // FIXME: MOVE CLOSE SOCKET
+        this.runned[started].instance.close();
+        
+        delete this.runned[started];
+
+        if (Object.keys(this.runned).length === 0) {
+            clearInterval(this.transfersWatcher);
+            this.transfersWatcher = undefined;
+        }
     };
 }

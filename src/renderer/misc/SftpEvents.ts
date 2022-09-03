@@ -183,3 +183,7 @@ export const copyPaths = async (onlyNames: boolean = false) => {
 
     StoreNotifications.add({ text: 'Copied' });
 };
+
+export const stopTransfer = async (started: number) => {
+    return await ipcRenderer.invoke('sftp:stop', started);
+};
