@@ -15,9 +15,9 @@ console.log('\r\n\r\n');
 
 console.log('BUILDING APP');
 await electronBuild({
+    // publish: 'always',
     config: {
-        files: ['dist'],
-        // appId: 'YourAppID',
+        appId: 'com.sshonix.app',
         asar: true,
         directories: {
             output: 'dist/release/${version}'
@@ -27,18 +27,32 @@ await electronBuild({
             target: [
                 {
                     target: 'nsis',
-                    arch: ['x64']
+                    arch: ['universal']
                 }
+                // {
+                //     target: 'zip',
+                //     arch: ['x64', 'ia32']
+                // }
             ],
-            artifactName: '${name}-v${version}-${arch}-${os}-installer.${ext}'
+            artifactName: '${name}-v${version}-${arch}-${os}.${ext}'
         },
         productName: 'SSHONIX',
-        copyright: '2022 Relloccate (Tool Mix)',
+        copyright: '2022 Relloccate',
         nsis: {
             oneClick: false,
             perMachine: false,
             allowToChangeInstallationDirectory: true,
-            deleteAppDataOnUninstall: false
+            deleteAppDataOnUninstall: false,
+            artifactName: '${name}-v${version}-${arch}-${os}-installer.${ext}'
+        },
+        // portable: {
+        //     artifactName: '${name}-v${version}-${arch}-${os}-portable.${ext}'
+        // },
+        publish: {
+            provider: 'github',
+            owner: 'assnctr',
+            repo: 'sshonix',
+            private: true
         }
     }
 })
