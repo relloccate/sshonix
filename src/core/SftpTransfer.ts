@@ -183,6 +183,7 @@ export default class SftpTransfer extends Sftp {
             const { base } = parse(from);
             const directoryItems = await FileList.getDirectoryFiles(from);
             const pathTo = isFirst ? to + '/' : to + '/' + base + '/';
+
             const files = directoryItems.filter(item => !item.isDirectory);
             const dirs = directoryItems.filter(item => item.isDirectory);
 
@@ -205,9 +206,5 @@ export default class SftpTransfer extends Sftp {
         } catch (error: any) {
             console.log(error);
         }
-    };
-
-    close = async () => {
-        await this.client.end();
     };
 }
