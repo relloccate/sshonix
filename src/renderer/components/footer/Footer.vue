@@ -19,13 +19,18 @@
 </template>
 <script>
 import Transfers from 'front/components/footer/Transfers.vue';
-import Commands from 'front/components/footer/Commands.vue';
+// import Commands from 'front/components/footer/Commands.vue';
 import FooterUpdates from 'front/components/footer/Updates.vue';
 
 import MouseSvg from 'front/svg/mouse.svg';
 
 export default {
-    components: { Transfers, Commands, FooterUpdates, MouseSvg },
+    components: {
+        Transfers,
+        // Commands,
+        FooterUpdates,
+        MouseSvg
+    },
     props: {
         showManu: Boolean
     }
