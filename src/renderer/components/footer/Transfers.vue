@@ -1,6 +1,6 @@
 <template>
     <div class="transfers">
-        <div class="item" :class="transfer.status" v-for="transfer in items" :key="transfer.started" @click="onClick(transfer)" @mouseenter="onHover(transfer, $event)" @mouseleave="onLeave">
+        <div class="item" :class="transfer.status" v-for="transfer in items" :key="transfer.started" @mouseenter="onHover(transfer, $event)" @mouseleave="onLeave">
             <div class="type">
                 <UploadSvg v-if="transfer.type === 'upload'" />
                 <DownloadSvg v-else />
@@ -17,7 +17,7 @@
     >
         <div class="status">{{ this.details.data.status }}</div>
         <div class="in-progress scroll-theme">
-            <div class="file" v-for="(percent, file) in this.details.data.files.inProgress" :key="file" v-tooltip="file">
+            <div class="file" v-for="(percent, file) in this.details.data.files.inProgress" :key="file" :title="file">
                 <div class="name">
                     <span>{{ file }}</span>
                 </div>
@@ -25,6 +25,7 @@
             </div>
         </div>
         <button @click="stop" v-if="this.details.data.status !== 'done'">Stop Transfer</button>
+        <button @click="remove" v-if="this.details.data.status === 'done'">Delete Transfer</button>
     </div>
 </template>
 <script>
@@ -60,9 +61,10 @@ export default {
         stop() {
             stopTransfer(this.details.data.started);
         },
-        onClick({ status, started }) {
-            if (status !== 'done') return;
+        remove() {
+            const { started } = this.details.data;
             StoreActiveSftpTransfers.remove({ started });
+            this.onLeave(true);
         },
         onHover(transfer, e) {
             const { x, y } = e.target.getBoundingClientRect();
