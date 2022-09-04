@@ -2,7 +2,6 @@ import TerminalLocal from './TerminalLocal';
 import TerminalRemote from './TerminalRemote';
 import { ipcMain } from 'electron';
 
-import type { PiniaActiveTerminalItem } from 'types/store';
 import type { TTerminalLocal, TTerminalRemote } from 'types/core';
 import type { WebContents } from 'electron';
 
@@ -14,12 +13,16 @@ class TerminalsPool {
     public webContentsInstance: WebContents | undefined = undefined;
 
     constructor() {
-        ipcMain.handle('terminal:run', (event, { channel, cwd, sizes, type, remoteData = {} }) => {
+        ipcMain.handle('terminal:run', (event, { channel, cwd, exec, sizes, type, remoteData = {} }) => {
             if (!this.webContentsInstance) {
                 this.webContentsInstance = event.sender;
             }
 
-            this.run({ channel, cwd, type, remoteData, sizes });
+            if (type === 'remote') {
+                this.runRemote({ channel, cwd, sizes, remoteData });
+            } else {
+                this.runLocal({ channel, cwd, exec, sizes });
+            }
         });
 
         ipcMain.handle('terminal:close', (event, channel) => {
@@ -31,14 +34,14 @@ class TerminalsPool {
         return this.runned[channel] !== undefined;
     };
 
-    run = ({ channel, cwd, type, sizes, remoteData }: TTerminalRemote & { type: PiniaActiveTerminalItem['type'] }) => {
+    runRemote = ({ channel, cwd, sizes, remoteData }: TTerminalRemote) => {
         if (this.isRunned(channel)) return;
+        this.runned[channel] = new TerminalRemote({ channel, cwd, sizes, remoteData }, this.webContentsInstance);
+    };
 
-        if (type === 'local') {
-            this.runned[channel] = new TerminalLocal({ channel, cwd, sizes }, this.webContentsInstance);
-        } else {
-            this.runned[channel] = new TerminalRemote({ channel, cwd, sizes, remoteData }, this.webContentsInstance);
-        }
+    runLocal = ({ channel, cwd, sizes, exec }: TTerminalLocal) => {
+        if (this.isRunned(channel)) return;
+        this.runned[channel] = new TerminalLocal({ channel, cwd, sizes, exec }, this.webContentsInstance);
     };
 
     close = (channel: TTerminalLocal['channel']) => {

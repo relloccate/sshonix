@@ -20,10 +20,11 @@ export type TTerminalLocal = {
     /** it is a main key, uses as ID */
     channel: number;
     cwd: string;
+    exec: 'powershell.exe' | 'cmd.exe' | 'bash';
     sizes: Pick<Sizes, 'cols' | 'rows'>;
 };
 
-export type TTerminalRemote = TTerminalLocal & {
+export type TTerminalRemote = Pick<TTerminalLocal, 'channel' | 'cwd'> & {
     sizes: Sizes;
     remoteData: {
         port: number;

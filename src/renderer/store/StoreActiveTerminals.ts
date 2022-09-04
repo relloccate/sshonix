@@ -15,7 +15,7 @@ const StoreActiveTerminals = defineStore('StoreActiveTerminals', {
         }
     },
     actions: {
-        add({ channel, added, title, type, cwd }: PiniaActiveTerminalItem): void {
+        add({ channel, added, title, type, cwd, exec }: PiniaActiveTerminalItem): void {
             this.items = this.items.map(item => {
                 return {
                     ...item,
@@ -29,6 +29,7 @@ const StoreActiveTerminals = defineStore('StoreActiveTerminals', {
                 title,
                 type,
                 cwd,
+                exec,
                 active: true
             });
         },

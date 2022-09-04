@@ -35,6 +35,7 @@ export type PiniaActiveTerminalItem = {
     title: string;
     type: 'local' | 'remote';
     cwd: string;
+    exec: 'powershell.exe' | 'cmd.exe' | 'bash';
 };
 
 export type PiniaActiveTerminalsState = {

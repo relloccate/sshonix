@@ -12,6 +12,7 @@ export default {
         channel: [String, Number],
         added: Number,
         cwd: String,
+        exec: String,
         type: String
     },
     setup() {
@@ -99,7 +100,7 @@ export default {
             });
 
             if (this.type === 'local') {
-                ipcRenderer.invoke('terminal:run', { channel: this.channel, type: this.type, cwd: this.cwd, sizes });
+                ipcRenderer.invoke('terminal:run', { channel: this.channel, type: this.type, cwd: this.cwd, exec: this.exec, sizes });
             } else {
                 ipcRenderer.invoke('terminal:run', {
                     channel: this.channel,

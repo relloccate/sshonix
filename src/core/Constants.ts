@@ -5,6 +5,7 @@ export const IS_PORTABLE: boolean = process.env.PORTABLE_EXECUTABLE_DIR ? true :
 export const IS_DEV: boolean = process.env.NODE_ENV === 'production' ? false : true;
 
 export const HOME_DIR: string = os.homedir();
+export const PLATFORM: string = os.platform();
 export const SETTINGS_FILE_NAME: string = 'sshonix.settings.json';
 export const SETTINGS_DEV_FILE_NAME: string = 'sshonix.settings.dev.json';
 export const APP_VERSION: string = version;

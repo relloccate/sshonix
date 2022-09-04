@@ -5,7 +5,7 @@
             <div class="page" :class="{ active: page === 'sftp' }" @click="page = 'sftp'">Sftp</div>
         </div>
         <div class="page-data">
-            <Terminal :added="terminal.added" :channel="terminal.channel" :cwd="terminal.cwd" :type="terminal.type" v-show="page === 'terminal'" />
+            <Terminal :added="terminal.added" :exec="terminal.exec" :channel="terminal.channel" :cwd="terminal.cwd" :type="terminal.type" v-show="page === 'terminal'" />
             <Sftp :sftp="sftp" v-if="sftp" v-show="page === 'sftp'" />
         </div>
     </div>

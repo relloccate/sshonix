@@ -2,14 +2,15 @@ import StoreActiveTerminals from 'front/store/StoreActiveTerminals';
 import { HOME_DIR } from 'core/Constants';
 
 export const initializeLocalTerminal = () => {
-    const ts = Date.now();
+    const channel = Date.now();
 
     StoreActiveTerminals.add({
-        added: ts,
+        channel,
+        active: true,
+        added: channel,
         title: 'LOCAL',
         cwd: HOME_DIR,
-        type: 'local',
-        active: true,
-        channel: ts
+        exec: 'powershell.exe',
+        type: 'local'
     });
 };
