@@ -12,7 +12,6 @@
 import StoreActiveTerminals from 'front/store/StoreActiveTerminals';
 import StoreActiveSftps from 'front/store/StoreActiveSftps';
 import { storeToRefs } from 'pinia';
-import { ipcRenderer } from 'electron';
 
 import CloseSvg from 'front/svg/close.svg';
 
@@ -21,19 +20,16 @@ export default {
     setup() {
         // TODO: REWRITE
         const { items } = storeToRefs(StoreActiveTerminals);
-        const { setActiveTerminal, remove } = StoreActiveTerminals;
+        const { setActiveTerminal } = StoreActiveTerminals;
 
         return {
             items,
-            setActiveTerminal,
-            remove
+            setActiveTerminal
         };
     },
     methods: {
         close(channel) {
-            ipcRenderer.invoke('terminal:close', channel);
-            ipcRenderer.invoke('sftp:close', channel);
-
+            // JUST REMOVE, IPC CHANNELS CLOSED IN UNMOUNT METHODS IN SFTP & TERMINAL
             StoreActiveTerminals.remove(channel);
             StoreActiveSftps.remove(channel);
         }

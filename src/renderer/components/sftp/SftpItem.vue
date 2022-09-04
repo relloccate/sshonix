@@ -9,6 +9,7 @@
                     :value="renaming.value"
                     @input="setRenaming(true, $event.target.value)"
                     @keyup="onRenameInput"
+                    @blur="setRenaming(false, '')"
                     type="text"
                     class="renaming text-input"
                     placeholder="Input New Name"

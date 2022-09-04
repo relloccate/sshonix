@@ -4,7 +4,7 @@
         <span v-if="isHasImportant">{{ getUpdatableReleases.length }} Updates Available, <b>has IMPORTANT!</b></span>
         <span v-else>{{ getUpdatableReleases.length }} Updates Available</span>
     </div>
-    <div class="menu" v-if="opened">
+    <div class="updates" v-if="opened">
         <div class="wrap scroll-theme">
             <div class="amount">
                 <span
@@ -66,7 +66,7 @@ export default {
     }
 }
 
-.menu {
+.updates {
     display: block;
     margin: 0;
     position: fixed;

@@ -24,7 +24,7 @@
                 <div class="percent">{{ percent }}%</div>
             </div>
         </div>
-        <button @click="stop" v-if="this.details.data.status !== 'done'">CLOSE</button>
+        <button @click="stop" v-if="this.details.data.status !== 'done'">Stop Transfer</button>
     </div>
 </template>
 <script>
