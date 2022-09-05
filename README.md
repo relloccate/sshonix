@@ -48,7 +48,6 @@ If you noticed abnormal behavior or other bug - please, create an issue.
 
 ### SFTP
 
--   **SFTP transfers are not cancelable (yet)**
 -   **If you uploading files they rewrite existing (is the same files are exists in dir)**
 
 </br>
