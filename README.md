@@ -8,7 +8,7 @@
   <img src="./assets/screens/3.png">
   
 # Features
--   **Multitabs** - Active Terminal / Sftp pool with fast navigation between tabs
+-   **Multitabs** - Active **Terminal** / **Sftp** pool with fast navigation between tabs
 -   **Terminal**
 -   **Sftp** - Super fast downloading / uploading (with no browsing lags)
 -   **Sftp Events**
@@ -21,8 +21,8 @@
     -   `RENAME`
     -   `COPY PATHS` - Full absolute paths
     -   `COPY NAMES` - Only file names
--   **Sftp Transfers** - Displays **Active** / **Done**, also **Errors** of the current transfers
--   **Sftp Search** - Regex (via js **RegExp**) search by file/folder name in current file list
+-   **Sftp Transfers** - Displays **Active Transfers**, **Done Transfers** and **Transfers Errors**
+-   **Sftp Search** - Regex (via js **RegExp**) search by **File**/**Folder** name in the current list
 -   **Updates** - Update notifications.
 
 # Hotkeys
