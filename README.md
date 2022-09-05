@@ -21,7 +21,7 @@
     -   `RENAME`
     -   `COPY PATHS` - Full absolute paths
     -   `COPY NAMES` - Only file names
--   **Sftp Transfers** - Displays current transfers
+-   **Sftp Transfers** - Displays `Active` / `Done`, also `Errors` of the current transfers
 -   **Sftp Search** - Regex search in current directory
 -   **Updates** - Update notifications.
 
