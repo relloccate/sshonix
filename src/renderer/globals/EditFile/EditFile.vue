@@ -22,7 +22,8 @@ export default {
     data() {
         return {
             isPending: false,
-            value: this.file.data
+            value: this.file.data,
+            valueLastSaved: this.file.data
         };
     },
     props: {
@@ -42,17 +43,18 @@ export default {
     },
     computed: {
         isChanged() {
-            return this.value !== this.file.data;
+            return this.value !== this.valueLastSaved;
         }
     },
     methods: {
-        onKeyDown(event) {
+        async onKeyDown(event) {
             if (event.code === 'Escape') {
                 this.close();
             }
 
-            if (event.ctrlKey && event.code === 'KeyS') {
-                this.save(false);
+            if (event.ctrlKey && this.isChanged && event.code === 'KeyS') {
+                await this.save(false);
+                this.valueLastSaved = this.value;
             }
         },
         async save(shouldClose = true) {
