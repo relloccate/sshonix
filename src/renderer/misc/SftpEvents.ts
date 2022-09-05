@@ -106,8 +106,6 @@ export const uploadFolders = async () => {
             files: []
         }
     });
-
-    await StoreActiveSftps.refresh(channel);
 };
 
 export const uploadFiles = async () => {
@@ -125,8 +123,6 @@ export const uploadFiles = async () => {
             files
         }
     });
-
-    await StoreActiveSftps.refresh(channel);
 };
 
 // REQUIRED VUE JS CONTEXT

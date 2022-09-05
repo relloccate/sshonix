@@ -1,5 +1,6 @@
 import StoreActiveSftpTransfers from 'front/store/StoreActiveSftpTransfers';
 import StoreNotifications from 'front/store/StoreNotifications';
+import StoreActiveSftps from 'front/store/StoreActiveSftps';
 import { ipcRenderer } from 'electron';
 
 ipcRenderer.on('sftp:transfer:progress', (ipcEvent, { event, data }) => {
@@ -9,6 +10,10 @@ ipcRenderer.on('sftp:transfer:progress', (ipcEvent, { event, data }) => {
         StoreActiveSftpTransfers.update(data);
     } else if (event === 'end') {
         StoreActiveSftpTransfers.end(data);
+
+        if (data.type === 'upload') {
+            StoreActiveSftps.refresh(data.channel);
+        }
     }
 });
 

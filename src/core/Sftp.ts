@@ -1,12 +1,9 @@
 import Client from 'ssh2-sftp-client';
 import { PassThrough } from 'stream';
-import { EventEmitter } from 'events';
 import { splitArrayByChunks } from './Misc';
 
 import type { ConnectOptions } from 'ssh2-sftp-client';
 import type { TSftpSelectedItems } from 'types/core';
-
-EventEmitter.setMaxListeners(0);
 
 export default class Sftp {
     protected client: Client = new Client();

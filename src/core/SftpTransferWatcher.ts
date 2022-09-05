@@ -38,9 +38,16 @@ export default class SftpTransferWatcher {
     }
 
     private sendTransferEnd({ started, status }: Pick<PiniaActiveSftpTransfersItem, 'started' | 'status'>, webContents: WebContents) {
+        const { type, channel } = this.runned[started];
+
         webContents.send('sftp:transfer:progress', {
             event: 'end',
-            data: { started, status }
+            data: {
+                started,
+                status,
+                type,
+                channel
+            }
         });
     }
 
