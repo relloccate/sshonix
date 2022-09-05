@@ -27,7 +27,8 @@
 
 # Hotkeys
 
--   **Sftp**
+-   **Sftp - File List**
+
     -   `F2` - Rename
     -   `DEL` - Remove selected items
     -   `CTRL + R`, `F5` - Refresh items
@@ -35,6 +36,10 @@
     -   `ESCAPE` - Deselect all items
     -   `SHIFT + CLICK` - Range items select
     -   `CTRL + CLICK` - Multiple select by one
+
+-   **Sftp - Quick File Edit**
+    -   `ESCAPE` - Exit editing
+    -   `CTRL + S` - Save and upload
 -   **Main**
     -   `CTRL + Mouse Center Click` - Open/Hide menu
 
