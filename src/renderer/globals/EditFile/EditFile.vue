@@ -4,7 +4,7 @@
             <div class="top">
                 <div class="name">{{ file.name }}</div>
                 <div class="actions">
-                    <button @click="save" v-if="isChanged">{{ isPending ? 'UPLOADING' : 'SAVE' }}</button>
+                    <button @click="save" v-if="isChanged">{{ isPending ? 'Uploading' : 'Save & Exit' }}</button>
                     <button @click="close"><CloseSvg /></button>
                 </div>
             </div>
