@@ -4,7 +4,8 @@
             <div class="top">
                 <div class="name">{{ file.name }}</div>
                 <div class="actions">
-                    <button @click="save">{{ isPending ? 'UPLOADING' : 'SAVE' }}</button>
+                    <button @click="save" v-if="isChanged">{{ isPending ? 'UPLOADING' : 'SAVE' }}</button>
+                    <button @click="close"><CloseSvg /></button>
                 </div>
             </div>
             <textarea class="text-input scroll-theme" v-model="value" />
@@ -14,7 +15,10 @@
 <script>
 import { refresh, writeQuickEdit } from 'front/misc/SftpEvents';
 
+import CloseSvg from 'front/svg/close.svg';
+
 export default {
+    components: { CloseSvg },
     data() {
         return {
             isPending: false,
@@ -36,20 +40,30 @@ export default {
     mounted() {
         document.addEventListener('keydown', this.onKeyDown);
     },
+    computed: {
+        isChanged() {
+            return this.value !== this.file.data;
+        }
+    },
     methods: {
         onKeyDown(event) {
             if (event.code === 'Escape') {
                 this.close();
             }
+
+            if (event.ctrlKey && event.code === 'KeyS') {
+                this.save(false);
+            }
         },
-        async save() {
+        async save(shouldClose = true) {
             if (this.isPending) return;
 
             this.isPending = true;
 
             await writeQuickEdit(this.file.path, this.value);
             await refresh();
-            this.close();
+
+            if (shouldClose) this.close();
 
             this.isPending = false;
         }
@@ -85,7 +99,7 @@ export default {
 
             & .name {
                 font-weight: 600;
-                font-size: 1.75em;
+                font-size: 2em;
             }
 
             & .actions {
@@ -95,6 +109,11 @@ export default {
 
                 & > button {
                     justify-content: center;
+                    margin-right: 2rem;
+
+                    &:last-child {
+                        margin-right: 0;
+                    }
                 }
             }
         }
