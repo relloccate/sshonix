@@ -60,7 +60,7 @@ class SftpPool {
             }
         });
 
-        ipcMain.handle('sftp:download', async (event, { channel, to, items }) => {
+        ipcMain.on('sftp:download', async (event, { channel, to, items }) => {
             const connectOptions = this.runned[channel].connectOptions;
             const transfer = new SftpTransfer(connectOptions);
             const addedToWatcher = this.watcher.add({ channel, type: 'download' }, transfer, this.webContentsInstance);
@@ -71,16 +71,13 @@ class SftpPool {
 
                 //FIXME: if user stop the transfer it never be reached?
 
-                this.webContentsInstance?.send('sftp:message', 'Downloaded');
+                this.watcher.end(addedToWatcher, this.webContentsInstance, 'done', 'Downloaded');
             } catch (error: any) {
-                this.webContentsInstance?.send('sftp:message', error.message);
-            } finally {
-                this.watcher.done(addedToWatcher, this.webContentsInstance);
-                return true;
+                this.watcher.end(addedToWatcher, this.webContentsInstance);
             }
         });
 
-        ipcMain.handle('sftp:upload', async (event, { channel, to, items }) => {
+        ipcMain.on('sftp:upload', async (event, { channel, to, items }) => {
             const connectOptions = this.runned[channel].connectOptions;
             const transfer = new SftpTransfer(connectOptions);
             const addedToWatcher = this.watcher.add({ channel, type: 'upload' }, transfer, this.webContentsInstance);
@@ -91,24 +88,14 @@ class SftpPool {
 
                 //FIXME: if user stop the transfer it never be reached?
 
-                this.webContentsInstance?.send('sftp:message', 'Uploaded');
+                this.watcher.end(addedToWatcher, this.webContentsInstance, 'done', 'Uploaded');
             } catch (error: any) {
-                this.webContentsInstance?.send('sftp:message', error.message);
-            } finally {
-                this.watcher.done(addedToWatcher, this.webContentsInstance);
-                return true;
+                this.watcher.end(addedToWatcher, this.webContentsInstance);
             }
         });
 
-        ipcMain.handle('sftp:stop', async (event, started) => {
-            try {
-                this.watcher.done(started, this.webContentsInstance);
-                this.webContentsInstance?.send('sftp:message', 'Stopped');
-            } catch (error: any) {
-                this.webContentsInstance?.send('sftp:message', error.message);
-            } finally {
-                return true;
-            }
+        ipcMain.on('sftp:stop', async (event, started) => {
+            this.watcher.end(started, this.webContentsInstance, 'stopped', 'Stopped');
         });
 
         ipcMain.handle('sftp:create', async (event, { channel, type, path: { remote } }) => {

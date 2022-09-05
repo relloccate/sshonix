@@ -55,7 +55,7 @@ export const downloadItems = async () => {
     const channel = getActiveChannel();
 
     if (to) {
-        await ipcRenderer.invoke('sftp:download', {
+        ipcRenderer.send('sftp:download', {
             channel,
             items: getSelectedFiles(channel),
             to
@@ -98,7 +98,7 @@ export const uploadFolders = async () => {
     const channel = getActiveChannel();
     const to = getActiveSftpPath(channel);
 
-    await ipcRenderer.invoke('sftp:upload', {
+    ipcRenderer.send('sftp:upload', {
         channel,
         to,
         items: {
@@ -117,7 +117,7 @@ export const uploadFiles = async () => {
     const channel = getActiveChannel();
     const to = getActiveSftpPath(channel);
 
-    await ipcRenderer.invoke('sftp:upload', {
+    ipcRenderer.send('sftp:upload', {
         channel,
         to,
         items: {
@@ -184,6 +184,4 @@ export const copyPaths = async (onlyNames: boolean = false) => {
     StoreNotifications.add({ text: 'Copied' });
 };
 
-export const stopTransfer = async (started: number) => {
-    return await ipcRenderer.invoke('sftp:stop', started);
-};
+export const stopTransfer = (started: number) => ipcRenderer.send('sftp:stop', started);

@@ -16,6 +16,7 @@ export default defineStore('StoreActiveSftpTransfers', {
                 started,
                 channel,
                 type,
+                errors: [],
                 status: 'in-progress',
                 files: {
                     done: [],
@@ -24,18 +25,18 @@ export default defineStore('StoreActiveSftpTransfers', {
                 }
             });
         },
-        done({ started }: PiniaActiveSftpTransfersItem): void {
+        end({ started, status }: PiniaActiveSftpTransfersItem): void {
             const element = this.items.find(item => item.started === started);
 
             if (element) {
-                element.status = 'done';
+                element.status = status;
                 element.files.inProgress = {};
             }
         },
         remove({ started }: PiniaActiveSftpTransfersItem): void {
             this.items = this.items.filter(item => item.started !== started);
         },
-        update({ started, data }: { started: PiniaActiveSftpTransfersItem['started']; data: TSftpTransfers }) {
+        update({ started, data }: { started: PiniaActiveSftpTransfersItem['started']; data: TSftpTransfers & Pick<PiniaActiveSftpTransfersItem, 'errors'> }) {
             const element = this.items.find(item => item.started === started);
 
             if (element) {
@@ -48,6 +49,8 @@ export default defineStore('StoreActiveSftpTransfers', {
                     element.files.done.push(...data.done);
                     element.files.inProgress = data.inProgress;
                 }
+
+                element.errors.push(...data.errors);
             }
         }
     }

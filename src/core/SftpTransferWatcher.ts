@@ -15,7 +15,7 @@ export default class SftpTransferWatcher {
     } = {};
 
     private sendTransferUpdate(started: PiniaActiveSftpTransfersItem['started'], webContents: WebContents) {
-        const data = this.runned[started].instance.getTransferProgressData();
+        const data = this.runned[started].instance.getTransferState();
 
         webContents.send('sftp:transfer:progress', {
             event: 'update',
@@ -37,10 +37,10 @@ export default class SftpTransferWatcher {
         });
     }
 
-    private sendTransferDone(started: PiniaActiveSftpTransfersItem['started'], webContents: WebContents) {
+    private sendTransferEnd({ started, status }: Pick<PiniaActiveSftpTransfersItem, 'started' | 'status'>, webContents: WebContents) {
         webContents.send('sftp:transfer:progress', {
-            event: 'done',
-            data: { started }
+            event: 'end',
+            data: { started, status }
         });
     }
 
@@ -67,15 +67,22 @@ export default class SftpTransferWatcher {
         return started;
     };
 
-    done = (started: PiniaActiveSftpTransfersItem['started'], webContents: any) => {
+    end = async (started: PiniaActiveSftpTransfersItem['started'], webContents: any, status?: 'done' | 'stopped', message?: string) => {
         if (!this.runned[started]) return;
+        if (message) webContents.send('sftp:message', message);
 
         this.sendTransferUpdate(started, webContents);
-        this.sendTransferDone(started, webContents);
 
+        if (status) {
+            this.sendTransferEnd({ started, status }, webContents);
+        }
+
+        this.destroySocketAndInterval(started);
+    };
+
+    destroySocketAndInterval = async (started: PiniaActiveSftpTransfersItem['started']) => {
         // FIXME: MOVE CLOSE SOCKET
-        this.runned[started].instance.close();
-        
+        await this.runned[started].instance.close();
         delete this.runned[started];
 
         if (Object.keys(this.runned).length === 0) {

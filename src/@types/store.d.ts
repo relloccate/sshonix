@@ -88,7 +88,8 @@ export type PiniaActiveSftpTransfersItem = {
     channel: PiniaActiveSftpsItem['channel'];
     started: number;
     type: 'download' | 'upload';
-    status: 'done' | 'in-progress';
+    status: 'done' | 'in-progress' | 'stopped';
+    errors: string[];
     files: {
         done: PiniaActiveSftpTransfersFile[];
         wait: PiniaActiveSftpTransfersFile[];

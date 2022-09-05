@@ -10,27 +10,22 @@ import type { TSftpSelectedItems, TSftpTransfers } from 'types/core';
 EventEmitter.setMaxListeners(0);
 
 export default class SftpTransfer extends Sftp {
-    private isStopped: boolean = false;
+    private errors: string[] = [];
     private transfers: TSftpTransfers = {
         done: [],
         wait: [],
         inProgress: {}
     };
 
-    // private createDirs = [];
-    // private moveFIles = [];
-
-    getTransferProgressData = () => {
+    getTransferState = () => {
         const { done, inProgress } = { ...this.transfers };
+        const errors = [...this.errors];
 
         this.transfers.done = [];
-        // this.transfers = {
-        //     done: [],
-        //     wait: [],
-        //     inProgress: {}
-        // };
+        this.errors = [];
 
         return {
+            errors,
             done,
             inProgress
         };
@@ -75,43 +70,6 @@ export default class SftpTransfer extends Sftp {
         }
     };
 
-    // protected getDirEntities = async (remote: string, local: string) => {
-    //     const list = await this.list(remote);
-
-    //     if (list) {
-    //         const files = list.filter(item => item.type === '-');
-    //         const dirs = list.filter(item => item.type === 'd');
-
-    //         for (const { name } of dirs) {
-    //             this.createDirs.push(resolve(local, name));
-    //             // await mkdir(resolve(local, name), { recursive: true });
-    //         }
-
-    //         for (const { name } of files) {
-    //             const nextRemote = `${remote}/${name}`;
-    //             const nextLocal = `${local}/${name}`;
-
-    //             this.moveFIles.push({
-    //                 from: nextRemote,
-    //                 to: nextLocal
-    //             });
-    //         }
-
-    //         for await (const chunk of splitArrayByChunks(dirs, 25)) {
-    //             await Promise.all(
-    //                 chunk.map(({ name }) => {
-    //                     const nextRemote = `${remote}/${name}`;
-    //                     const nextLocal = `${local}/${name}`;
-
-    //                     return this.getDirEntities(nextRemote, nextLocal);
-    //                 })
-    //             );
-    //         }
-    //     } else {
-    //         console.log(`Can't get list of : ${remote}`);
-    //     }
-    // };
-
     protected getDir = async (remote: string, local: string) => {
         const list = await this.list(remote);
 
@@ -146,65 +104,76 @@ export default class SftpTransfer extends Sftp {
     };
 
     protected getFile = async (remote: string, local: string) => {
-        this.transfers.inProgress[remote] = '0';
+        try {
+            this.transfers.inProgress[remote] = '0';
 
-        const result = await this.client.fastGet(remote, local, {
-            concurrency: 64,
-            chunkSize: 32768 * 6,
-            step: (total_transferred, chunk, total) => {
-                this.transfers.inProgress[remote] = ((total_transferred / total) * 100).toFixed(2);
-            }
-        });
+            const result = await this.client.fastGet(remote, local, {
+                concurrency: 64,
+                chunkSize: 32768 * 6,
+                step: (total_transferred, chunk, total) => {
+                    this.transfers.inProgress[remote] = ((total_transferred / total) * 100).toFixed(2);
+                }
+            });
 
-        this.transfers.done.push({ from: remote, to: local });
-        delete this.transfers.inProgress[remote];
-        return result;
+            this.transfers.done.push({ from: remote, to: local });
+            delete this.transfers.inProgress[remote];
+            return result;
+        } catch (error: any) {
+            this.errors.push(`Can't download file from ${remote} to ${local}. Message: ${error.message}`);
+        }
     };
 
     protected putFile = async (local: string, remote: string) => {
-        this.transfers.inProgress[remote] = '0';
+        try {
+            this.transfers.inProgress[remote] = '0';
 
-        const result = await this.client.fastPut(local, remote, {
-            concurrency: 64,
-            chunkSize: 32768 * 6,
-            step: (total_transferred, chunk, total) => {
-                this.transfers.inProgress[remote] = ((total_transferred / total) * 100).toFixed(2);
-            }
-        });
+            const result = await this.client.fastPut(local, remote, {
+                concurrency: 64,
+                chunkSize: 32768 * 6,
+                step: (total_transferred, chunk, total) => {
+                    this.transfers.inProgress[remote] = ((total_transferred / total) * 100).toFixed(2);
+                }
+            });
 
-        this.transfers.done.push({ from: local, to: remote });
-        delete this.transfers.inProgress[remote];
+            this.transfers.done.push({ from: local, to: remote });
+            delete this.transfers.inProgress[remote];
 
-        return result;
+            return result;
+        } catch (error: any) {
+            this.errors.push(`Can't upload file from ${local} to ${remote}. Message: ${error.message}`);
+        }
+    };
+
+    protected makeDir = async (path: string) => {
+        try {
+            return await this.client.mkdir(path, true);
+        } catch (error: any) {
+            this.errors.push(`Can't create remote directory. Message: ${error.message}`);
+        }
     };
 
     protected putDir = async (from: string, to: string, isFirst: boolean = true) => {
-        try {
-            const { base } = parse(from);
-            const directoryItems = await FileList.getDirectoryFiles(from);
-            const pathTo = isFirst ? to + '/' : to + '/' + base + '/';
+        const { base } = parse(from);
+        const directoryItems = await FileList.getDirectoryFiles(from);
+        const pathTo = isFirst ? to + '/' : to + '/' + base + '/';
 
-            const files = directoryItems.filter(item => !item.isDirectory);
-            const dirs = directoryItems.filter(item => item.isDirectory);
+        const files = directoryItems.filter(item => !item.isDirectory);
+        const dirs = directoryItems.filter(item => item.isDirectory);
 
-            for await (const chunk of splitArrayByChunks(files, 25)) {
-                await Promise.all(
-                    chunk.map(({ fullPath, name }) => {
-                        return this.putFile(fullPath, `${pathTo}${name}`);
-                    })
-                );
+        for await (const chunk of splitArrayByChunks(files, 25)) {
+            await Promise.all(
+                chunk.map(({ fullPath, name }) => {
+                    return this.putFile(fullPath, `${pathTo}${name}`);
+                })
+            );
+        }
+
+        for await (const file of dirs) {
+            const result = await this.makeDir(`${pathTo}${file.name}`);
+
+            if (result) {
+                await this.putDir(file.fullPath, pathTo, false);
             }
-
-            for await (const file of dirs) {
-                try {
-                    await this.client.mkdir(`${pathTo}${file.name}`, true);
-                    await this.putDir(file.fullPath, pathTo, false);
-                } catch (error: any) {
-                    console.log(error);
-                }
-            }
-        } catch (error: any) {
-            console.log(error);
         }
     };
 }

@@ -7,8 +7,8 @@ ipcRenderer.on('sftp:transfer:progress', (ipcEvent, { event, data }) => {
         StoreActiveSftpTransfers.add(data);
     } else if (event === 'update') {
         StoreActiveSftpTransfers.update(data);
-    } else if (event === 'done') {
-        StoreActiveSftpTransfers.done(data);
+    } else if (event === 'end') {
+        StoreActiveSftpTransfers.end(data);
     }
 });
 
