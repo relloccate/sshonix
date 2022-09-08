@@ -51,7 +51,11 @@ const StoreActiveTerminals = defineStore('StoreActiveTerminals', {
         remove(channel: PiniaActiveTerminalItem['channel']) {
             this.items = this.items.filter(item => item.channel !== channel);
 
-            this.setActiveTerminal(this.items[0].channel);
+            if (!this.items.length) return;
+
+            setImmediate(() => {
+                this.setActiveTerminal(this.items[this.items.length - 1].channel);
+            });
         }
     }
 })(PiniaInstance);
