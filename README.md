@@ -53,7 +53,8 @@ If you noticed abnormal behavior or other bug - please, create an issue.
 
 ### SFTP
 
--   **If you uploading files they rewrite existing (is the same files are exists in dir)**
+-   **File uploading will rewrite an existing files.**
+-   **COPY/CUT files/folders not implemented.**
 
 </br>
 </br>
