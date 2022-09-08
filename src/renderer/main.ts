@@ -1,4 +1,4 @@
-import 'front/css/vars.css';
+import 'front/css/vars.postcss';
 import 'front/css/main.postcss';
 import 'front/css/contextmenu.postcss';
 
