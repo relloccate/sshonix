@@ -92,9 +92,8 @@ const StoreActiveSftps = defineStore('StoreActiveSftps', {
             let element = this.items.find(item => item.channel === channel);
 
             if (element) {
-                // bug fix: if user filtered items by search and press CTRL + A
-                // then selects all items instead of filtered only
-                // @ts-ignore - omg TS wtf
+                // bug fix: if the user has filtered and pressed CTRL + A, then all items will be selected, not those that are filtered
+                // @ts-ignore
                 const items = selected && element.search.length > 0 ? element.files.filter(({ data }) => new RegExp(element.search, 'i').test(data.name)) : element.files;
 
                 for (const file of items) {

@@ -69,7 +69,7 @@ class SftpPool {
                 await transfer.connect();
                 await transfer.download(to, items);
 
-                //FIXME: if user stop the transfer it never be reached?
+                //FIXME: if user stops the transfer this line never be reached?
 
                 this.watcher.end(addedToWatcher, this.webContentsInstance, 'done', 'Downloaded');
             } catch (error: any) {
@@ -86,7 +86,7 @@ class SftpPool {
                 await transfer.connect();
                 await transfer.upload(to, items);
 
-                //FIXME: if user stop the transfer it never be reached?
+                //FIXME: if user stops the transfer this line never be reached?
 
                 this.watcher.end(addedToWatcher, this.webContentsInstance, 'done', 'Uploaded');
             } catch (error: any) {
