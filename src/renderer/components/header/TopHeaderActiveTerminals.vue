@@ -18,21 +18,21 @@ import CloseSvg from 'front/svg/close.svg';
 export default {
     components: { CloseSvg },
     setup() {
-        // TODO: REWRITE
         const { items } = storeToRefs(StoreActiveTerminals);
-        const { setActiveTerminal } = StoreActiveTerminals;
+        const { setActiveTerminal, remove } = StoreActiveTerminals;
+        const { remove: removeSftp } = StoreActiveSftps;
+
+        const close = channel => {
+            // JUST REMOVE, IPC CHANNELS CLOSED IN UNMOUNT METHODS IN SFTP & TERMINAL
+            remove(channel);
+            removeSftp(channel);
+        };
 
         return {
             items,
-            setActiveTerminal
+            setActiveTerminal,
+            close
         };
-    },
-    methods: {
-        close(channel) {
-            // JUST REMOVE, IPC CHANNELS CLOSED IN UNMOUNT METHODS IN SFTP & TERMINAL
-            StoreActiveTerminals.remove(channel);
-            StoreActiveSftps.remove(channel);
-        }
     }
 };
 </script>

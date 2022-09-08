@@ -16,12 +16,12 @@ const StoreActiveTerminals = defineStore('StoreActiveTerminals', {
     },
     actions: {
         add({ channel, added, title, type, cwd, exec }: PiniaActiveTerminalItem): void {
-            this.items = this.items.map(item => {
-                return {
-                    ...item,
-                    active: false
-                };
-            });
+            for (const item of this.items) {
+                if (item.active) {
+                    item.active = false;
+                    break;
+                }
+            }
 
             this.items.push({
                 channel,
@@ -34,21 +34,24 @@ const StoreActiveTerminals = defineStore('StoreActiveTerminals', {
             });
         },
         setActiveTerminal(channel: PiniaActiveTerminalItem['channel']): void {
-            this.items = this.items.map(item => {
-                return {
-                    ...item,
-                    active: item.channel === channel ? true : false
-                };
-            });
+            for (const item of this.items) {
+                if (item.active && item.channel === channel) {
+                    break;
+                }
+
+                if (item.active) {
+                    item.active = false;
+                }
+
+                if (item.channel === channel) {
+                    item.active = true;
+                }
+            }
         },
         remove(channel: PiniaActiveTerminalItem['channel']) {
             this.items = this.items.filter(item => item.channel !== channel);
 
-            if (this.items.length > 0) {
-                return this.items[0].channel;
-            }
-
-            return null;
+            this.setActiveTerminal(this.items[0].channel);
         }
     }
 })(PiniaInstance);
