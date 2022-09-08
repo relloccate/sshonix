@@ -17,7 +17,7 @@ console.log('BUILDING APP');
 await electronBuild({
     // publish: 'always',
     config: {
-        appId: 'com.sshonix.app',
+        appId: 'relloccate.sshonix.app',
         asar: true,
         directories: {
             output: 'dist/release/${version}'
@@ -27,12 +27,12 @@ await electronBuild({
             target: [
                 {
                     target: 'nsis',
-                    arch: ['universal']
+                    arch: ['x64', 'ia32']
+                },
+                {
+                    target: 'zip',
+                    arch: ['x64', 'ia32']
                 }
-                // {
-                //     target: 'zip',
-                //     arch: ['x64', 'ia32']
-                // }
             ],
             artifactName: '${name}-v${version}-${arch}-${os}.${ext}'
         },
