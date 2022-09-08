@@ -43,9 +43,6 @@ const StoreServers = defineStore('StoreServers', {
                 const auth = element.auth.key.active ? { privateKey: element.auth.key.data, passphrase: element.auth.key.passphrase } : { password: element.auth.password.data };
 
                 return {
-                    // added: element.added,
-                    // title: element.title,
-                    // description: element.description,
                     host: element.host,
                     port: element.port,
                     login: element.login,
