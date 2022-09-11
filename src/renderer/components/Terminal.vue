@@ -1,5 +1,6 @@
 <template>
-    <div :class="`terminal-wrap ${channel} scroll-theme`" />
+    <div :class="`terminal-wrap ${type} ${channel} scroll-theme`" />
+    <!-- <div :class="`terminal-wrap filled ${type} ${channel} scroll-theme`" /> -->
 </template>
 <script>
 import StoreServers from 'front/store/StoreServers';
@@ -150,10 +151,17 @@ export default {
 <style lang="postcss">
 .terminal-wrap {
     position: relative;
-    /* margin-top: 2em; */
-    height: calc(100vh - 13em);
-    /* overflow-x: hidden; */
-    /* overflow-y: auto; */
+    height: calc(100vh - 13.3rem);
+
+    &.filled {
+        border-radius: 0.75em;
+        height: calc(100% - 1em);
+        background-color: color-mod(var(--dark-white-color) a(2%));
+        /* background-image: linear-gradient(129deg, color-mod(var(--dark-white-color) a(1%)), color-mod(var(--main-color) a(1%))); */
+        /* border: 1px solid color-mod(var(--main-color) a(15%)); */
+
+        padding: 1em;
+    }
 
     & .xterm {
         position: relative;

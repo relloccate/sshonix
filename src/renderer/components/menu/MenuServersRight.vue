@@ -420,14 +420,14 @@ export default {
 
     & .tip {
         overflow: hidden;
-        padding: 1.25rem;
+        padding: 1.25rem 2em;
         margin: 1.25rem;
         font-weight: 600;
         font-size: 0.85em;
         color: color-mod(var(--dark-white-color) a(65%));
         border-radius: 0.75rem;
         /* border: 1px dashed color-mod(var(--dark-white-color) a(15%)); */
-        background-color: color-mod(var(--dark-white-color) a(5%));
+        background-color: color-mod(var(--dark-white-color) a(3%));
     }
 }
 </style>

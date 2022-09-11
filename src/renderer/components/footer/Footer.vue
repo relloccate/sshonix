@@ -71,7 +71,7 @@ footer {
             padding: 0.75rem 1.25rem;
             user-select: none;
             border-radius: 1rem 1rem 0 0;
-            background-color: color-mod(var(--dark-white-color) a(5%));
+            background-color: color-mod(var(--dark-white-color) a(3%));
             align-items: center;
             width: auto;
 
