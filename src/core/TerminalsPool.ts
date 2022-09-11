@@ -47,6 +47,7 @@ class TerminalsPool {
     close = (channel: TTerminalLocal['channel']) => {
         if (this.isRunned(channel)) {
             ipcMain.removeAllListeners(`terminal:${channel}.on-key`);
+            ipcMain.removeAllListeners(`terminal:${channel}.fit`);
 
             this.runned[channel].close();
             delete this.runned[channel];
