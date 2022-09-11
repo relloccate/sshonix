@@ -38,6 +38,10 @@ export default class TerminalRemote {
                 stream.write(data);
             });
 
+            ipcMain.on(`terminal:${channel}.fit`, (event, { rows, cols, height, width }) => {
+                stream.setWindow(rows, cols, height, width);
+            });
+
             stream.on('close', () => {
                 this.client?.end();
             });

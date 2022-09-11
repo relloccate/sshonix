@@ -117,7 +117,8 @@ export default {
             const nextWidth = width; // just to be
             const nextHeight = height - 96;
 
-            const cols = Number((nextWidth / 9).toFixed(0));
+            const cols = Number((nextWidth / 8).toFixed(0));
+            // const cols = Number((nextWidth / 8.2).toFixed(0));
             const rows = Number((nextHeight / 17).toFixed(0));
 
             return {
@@ -141,9 +142,7 @@ export default {
 
                     this.term.resize(cols, rows);
                 }
-            } catch (error) {
-                console.log(error);
-            }
+            } catch {}
         }
     }
 };
