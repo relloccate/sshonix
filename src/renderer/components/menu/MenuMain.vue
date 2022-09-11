@@ -49,7 +49,7 @@ export default {
     /* transition: height 0.3s var(--ease); */
     overflow: hidden;
     backdrop-filter: saturate(150%) blur(5px);
-    background-color: color-mod(var(--back-color) a(90%));
+    background-color: color-mod(var(--back-color) a(95%));
 
     &.settings-opened {
         height: 100%;

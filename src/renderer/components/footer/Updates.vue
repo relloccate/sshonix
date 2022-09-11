@@ -79,7 +79,7 @@ export default {
     justify-content: center;
     align-items: center;
     backdrop-filter: saturate(150%) blur(5px);
-    background-color: color-mod(var(--back-color) a(90%));
+    background-color: color-mod(var(--back-color) a(95%));
     animation: fade-left 0.3s var(--ease);
     overflow: hidden;
     padding: 2em 2em 0 2em;

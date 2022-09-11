@@ -91,7 +91,7 @@ export default {
     backdrop-filter: saturate(150%) blur(5px);
     animation: fade-up 0.3s var(--ease);
     background-color: color-mod(var(--main-color) a(35%));
-    background-image: linear-gradient(100deg, color-mod(var(--back-color) a(90%)), color-mod(var(--back-color) a(90%)));
+    background-image: linear-gradient(100deg, color-mod(var(--back-color) a(95%)), color-mod(var(--back-color) a(95%)));
     border-radius: 0.75em;
     display: flex;
     flex-flow: column;

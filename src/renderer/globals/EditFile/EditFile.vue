@@ -83,7 +83,7 @@ export default {
     height: 100%;
     display: flex;
     backdrop-filter: saturate(150%) blur(5px);
-    background-color: color-mod(var(--back-color) a(90%));
+    background-color: color-mod(var(--back-color) a(95%));
     animation: fade-left 0.3s var(--ease);
 
     & .wrap {
