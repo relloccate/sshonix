@@ -23,8 +23,8 @@
     -   `PASTE`
     -   `DELETE`
     -   `RENAME`
-    -   `COPY PATHS` - Full absolute paths
-    -   `COPY NAMES` - Only file names
+    -   `COPY PATHS` - Copy full absolute paths of files/folders to clipboard
+    -   `COPY NAMES` - Copy names of files/folders to clipboard
 -   **Sftp Transfers** - Displays **Active Transfers**, **Done Transfers** and **Transfers Errors**
 -   **Sftp Search** - Regex (via js **RegExp**) search by **File**/**Folder** name in the current list
 -   **Updates** - Update notifications.
