@@ -14,10 +14,12 @@
 -   **Sftp Events**
     -   `REFRESH`
     -   `QICK EDIT` - Max file size is 10 mb
-    -   `UPLOAD FILES / FOLDERS`
-    -   `DOWNLOAD FILES / FOLDERS`
-    -   `CREATE FILE / FOLDER`
-    -   `CUT, COPY, PASTE FILE / FOLDER`
+    -   `UPLOAD`
+    -   `DOWNLOAD`
+    -   `CREATE`
+    -   `CUT`
+    -   `COPY`
+    -   `PASTE`
     -   `DELETE`
     -   `RENAME`
     -   `COPY PATHS` - Full absolute paths
