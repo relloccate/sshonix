@@ -1,4 +1,4 @@
-import Sftp from './Sftp';
+import SftpBase from './SftpBase';
 import SftpTransfer from './SftpTransfer';
 import SftpTransferWatcher from './SftpTransferWatcher';
 import { ipcMain } from 'electron';
@@ -8,7 +8,7 @@ import type { WebContents } from 'electron';
 
 class SftpPool {
     private runned: {
-        [key: TTerminalRemote['channel']]: Sftp;
+        [key: TTerminalRemote['channel']]: SftpBase;
     } = {};
 
     public webContentsInstance: WebContents | undefined = undefined;
@@ -23,7 +23,7 @@ class SftpPool {
 
                 const { port, login, auth, host } = remoteData;
 
-                this.runned[channel] = new Sftp({
+                this.runned[channel] = new SftpBase({
                     port,
                     username: login,
                     ...auth,
@@ -109,8 +109,7 @@ class SftpPool {
 
         ipcMain.handle('sftp:delete', async (event, { channel, items }) => {
             try {
-                await this.runned[channel].delete(items);
-                this.webContentsInstance?.send('sftp:message', 'Deleted');
+                return await this.runned[channel].delete(items);
             } catch (error: any) {
                 this.webContentsInstance?.send('sftp:message', error.message);
             }
@@ -118,8 +117,7 @@ class SftpPool {
 
         ipcMain.handle('sftp:rename', async (event, { channel, from, to }) => {
             try {
-                await this.runned[channel].rename(from, to);
-                this.webContentsInstance?.send('sftp:message', 'Renamed');
+                return await this.runned[channel].rename(from, to);
             } catch (error: any) {
                 this.webContentsInstance?.send('sftp:message', error.message);
             }

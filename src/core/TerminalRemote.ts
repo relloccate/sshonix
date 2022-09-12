@@ -56,6 +56,28 @@ export default class TerminalRemote {
         });
     }
 
+    exec = (command: string) => {
+        return new Promise((resolve, reject) => {
+            this.client.exec(command, (error, stream) => {
+                if (error) reject(error);
+
+                let output = '';
+
+                stream.on('data', (data: string) => {
+                    output += data;
+                });
+
+                stream.stderr.on('data', (data: string) => {
+                    output += data;
+                });
+
+                stream.on('close', () => {
+                    resolve(output);
+                });
+            });
+        });
+    };
+
     close = () => {
         this.client.destroy();
     };

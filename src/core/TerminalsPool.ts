@@ -28,6 +28,13 @@ class TerminalsPool {
         ipcMain.handle('terminal:close', (event, channel) => {
             this.close(channel);
         });
+
+        ipcMain.handle('terminal:exec', async (event, { channel, command }) => {
+            if (this.runned[channel] instanceof TerminalRemote) {
+                // @ts-ignore TRASHSCRIPT
+                return await this.runned[channel].exec(command);
+            }
+        });
     }
 
     isRunned = (channel: TTerminalLocal['channel']) => {

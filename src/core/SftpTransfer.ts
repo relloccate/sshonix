@@ -1,4 +1,4 @@
-import Sftp from './Sftp';
+import SftpBase from './SftpBase';
 import FileList from './FileList';
 import { resolve, parse } from 'path';
 import { EventEmitter } from 'events';
@@ -9,7 +9,7 @@ import type { TSftpSelectedItems, TSftpTransfers } from 'types/core';
 
 EventEmitter.setMaxListeners(0);
 
-export default class SftpTransfer extends Sftp {
+export default class SftpTransfer extends SftpBase {
     private errors: string[] = [];
     private transfers: TSftpTransfers = {
         done: [],

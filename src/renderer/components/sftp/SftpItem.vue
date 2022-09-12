@@ -32,7 +32,7 @@
 import SftpTop from 'front/components/sftp/SftpTop.vue';
 import StoreActiveSftps from 'front/store/StoreActiveSftps';
 import bytesToSize from 'front/misc/BytesToSize';
-import { ipcRenderer } from 'electron';
+import { rename } from 'front/misc/SftpEvents';
 
 import FolderSvg from 'front/svg/folder.svg';
 import FileSvg from 'front/svg/file.svg';
@@ -82,13 +82,7 @@ export default {
         },
         async onRenameInput(event) {
             if (event.code === 'Enter') {
-                await ipcRenderer.invoke('sftp:rename', {
-                    channel: this.channel,
-                    from: `${this.currentPath}${this.file.name}`,
-                    to: `${this.currentPath}${this.renaming.value}`
-                });
-
-                StoreActiveSftps.refresh(this.channel);
+                await rename(`${this.currentPath}${this.file.name}`, `${this.currentPath}${this.renaming.value}`);
             }
 
             if (event.code === 'Escape') {

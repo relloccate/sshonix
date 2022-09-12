@@ -24,7 +24,21 @@
 <script>
 import SftpItem from 'front/components/sftp/SftpItem.vue';
 import StoreActiveSftps from 'front/store/StoreActiveSftps';
-import { copyPaths, createFile, createFolder, deleteItems, downloadItems, getQuickEdit, getSelectedItems, refresh, setRenaming, uploadFiles, uploadFolders } from 'front/misc/SftpEvents';
+import {
+    copyPaths,
+    createFile,
+    createFolder,
+    deleteItems,
+    downloadItems,
+    getQuickEdit,
+    getSelectedItems,
+    paste,
+    refresh,
+    setBuffer,
+    setRenaming,
+    uploadFiles,
+    uploadFolders
+} from 'front/misc/SftpEvents';
 
 import EmptySvg from 'front/svg/empty.svg';
 
@@ -134,22 +148,6 @@ export default {
                     label: 'Upload Files',
                     onClick: uploadFiles
                 },
-                // uploadFiles: {
-                //     label: 'Upload Files',
-                //     onClick: () => {
-                //         this.$ConfirmMenu({
-                //             text: `If the files already exist, they will be overwritten`,
-                //             accept: {
-                //                 text: 'OK',
-                //                 event: uploadFiles
-                //             },
-                //             decline: {
-                //                 text: 'BACK',
-                //                 event: null
-                //             }
-                //         });
-                //     }
-                // },
                 uploadFolders: {
                     label: 'Upload Folders',
                     onClick: uploadFolders
@@ -178,15 +176,29 @@ export default {
                 },
                 delete: {
                     label: 'Delete',
-                    onClick: deleteItems.bind(this)
+                    onClick: deleteItems.bind(this, true)
                 },
                 rename: {
                     label: 'Rename',
                     onClick: async () => {
                         setRenaming(true);
                     }
+                },
+                copy: {
+                    label: 'Copy',
+                    onClick: () => setBuffer('copy')
+                },
+                cut: {
+                    label: 'Cut',
+                    onClick: () => setBuffer('cut')
+                },
+                paste: {
+                    label: 'Paste',
+                    onClick: paste
                 }
             };
+
+            const isCanPaste = StoreActiveSftps.$state.buffer.action !== 'none' && StoreActiveSftps.$state.buffer.channel === this.channel;
 
             this.$contextmenu({
                 x: event.x,
@@ -205,10 +217,13 @@ export default {
                               events.delete,
                               events.rename,
                               events.copyPaths,
-                              events.copyNames
+                              events.copyNames,
+                              events.copy,
+                              events.cut,
+                              ...(isCanPaste ? [events.paste] : [])
                           ]
                         : // if not
-                          [events.refresh, events.uploadFiles, events.uploadFolders, events.createFile, events.createFolder]
+                          [events.refresh, events.uploadFiles, events.uploadFolders, events.createFile, events.createFolder, ...(isCanPaste ? [events.paste] : [])]
             });
         }
     }

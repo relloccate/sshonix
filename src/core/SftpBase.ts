@@ -5,7 +5,7 @@ import { splitArrayByChunks } from './Misc';
 import type { ConnectOptions } from 'ssh2-sftp-client';
 import type { TSftpSelectedItems } from 'types/core';
 
-export default class Sftp {
+export default class SftpBase {
     protected client: Client = new Client();
 
     constructor(public connectOptions: ConnectOptions) {}

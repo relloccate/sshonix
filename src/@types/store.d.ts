@@ -1,4 +1,5 @@
 import type { FileInfo } from 'ssh2-sftp-client';
+import type { TSftpSelectedItems } from './core';
 
 // PINIA - SERVERS
 export type PiniaServersItem = {
@@ -66,6 +67,11 @@ export type PiniaActiveSftpsItem = {
 
 export type PiniaActiveSftpsState = {
     items: PiniaActiveSftpsItem[];
+    buffer: {
+        action: 'none' | 'copy' | 'cut';
+        channel: PiniaActiveSftpsItem['channel'];
+        files: TSftpSelectedItems[];
+    };
 };
 
 // PINIA - ACTIVE NOTIFICATIONS

@@ -11,7 +11,7 @@ import Notifications from 'front/components/misc/Notifications.vue';
 import Pool from 'front/components/Pool.vue';
 import MenuMain from 'front/components/menu/MenuMain.vue';
 import Footer from 'front/components/footer/Footer.vue';
-import { setRenaming, setSelecting, refresh, deleteItems } from 'front/misc/SftpEvents';
+import { setRenaming, setSelecting, refresh, deleteItems, setBuffer, paste } from 'front/misc/SftpEvents';
 
 export default {
     components: { TopHeader, Notifications, Pool, MenuMain, Footer },
@@ -80,7 +80,22 @@ export default {
 
                 if (event.code === 'Delete') {
                     event.preventDefault();
-                    deleteItems.bind(this)();
+                    deleteItems.bind(this, true)();
+                }
+
+                if (event.code === 'KeyX') {
+                    event.preventDefault();
+                    setBuffer('cut');
+                }
+
+                if (event.code === 'KeyC') {
+                    event.preventDefault();
+                    setBuffer('copy');
+                }
+
+                if (event.code === 'KeyV') {
+                    event.preventDefault();
+                    paste();
                 }
             }
         },

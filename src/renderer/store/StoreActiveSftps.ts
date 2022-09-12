@@ -8,7 +8,12 @@ import type { FileInfo } from 'ssh2-sftp-client';
 const StoreActiveSftps = defineStore('StoreActiveSftps', {
     state: (): PiniaActiveSftpsState => {
         return {
-            items: []
+            items: [],
+            buffer: {
+                action: 'none',
+                channel: 0,
+                files: []
+            }
         };
     },
     actions: {
@@ -28,6 +33,13 @@ const StoreActiveSftps = defineStore('StoreActiveSftps', {
         },
         remove(channel: PiniaActiveTerminalItem['channel']) {
             this.items = this.items.filter(item => item.channel !== channel);
+        },
+        setBuffer({ action, channel, files }: PiniaActiveSftpsState['buffer']) {
+            this.buffer = {
+                action,
+                channel,
+                files
+            };
         },
         sort(channel: PiniaActiveTerminalItem['channel'], by: PiniaActiveSftpsItem['sort']['by']) {
             let element = this.items.find(item => item.channel === channel);

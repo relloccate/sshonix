@@ -39,15 +39,25 @@ export const refresh = async () => {
     StoreNotifications.add({ text: 'Refreshed' });
 };
 
-export const deleteitems = async () => {
+export const deleteitems = async (viaCommand: boolean = false) => {
     const channel = getActiveChannel();
+    const items = getSelectedFiles(channel);
 
-    await ipcRenderer.invoke('sftp:delete', {
-        channel,
-        items: getSelectedFiles(channel)
-    });
+    if (viaCommand) {
+        await ipcRenderer.invoke('terminal:exec', {
+            channel,
+            command: `rm -rf ${items.map(({ path }) => path).join(' ')}`
+        });
+    } else {
+        await ipcRenderer.invoke('sftp:delete', {
+            channel,
+            items
+        });
+    }
 
     await StoreActiveSftps.refresh(channel);
+
+    StoreNotifications.add({ text: 'Deleted' });
 };
 
 export const downloadItems = async () => {
@@ -108,6 +118,66 @@ export const uploadFolders = async () => {
     });
 };
 
+export const rename = async (from: string, to: string) => {
+    const channel = getActiveChannel();
+
+    await ipcRenderer.invoke('sftp:rename', {
+        channel,
+        from,
+        to
+    });
+
+    await StoreActiveSftps.refresh(channel);
+    StoreNotifications.add({ text: 'Renamed' });
+};
+
+export const paste = async () => {
+    const channel = getActiveChannel();
+    const to = getActiveSftpPath(channel);
+    const buffer = StoreActiveSftps.$state.buffer;
+
+    if (channel !== buffer.channel) return;
+
+    if (buffer.action === 'copy') {
+        await ipcRenderer.invoke('terminal:exec', {
+            channel,
+            command: `cp -r ${buffer.files.map(({ path }) => path).join(' ')} ${to}`
+        });
+    }
+
+    if (buffer.action === 'cut') {
+        await ipcRenderer.invoke('terminal:exec', {
+            channel,
+            command: `mv -f ${buffer.files.map(({ path }) => path).join(' ')} ${to}`
+        });
+
+        StoreActiveSftps.setBuffer({
+            action: 'none',
+            channel: 0,
+            files: []
+        });
+    }
+
+    await StoreActiveSftps.refresh(channel);
+
+    StoreNotifications.add({ text: 'Pasted' });
+};
+
+export const setBuffer = (action: 'cut' | 'copy') => {
+    const channel = getActiveChannel();
+    const files = getSelectedFiles(channel);
+
+    if (!files) return;
+
+    StoreActiveSftps.setBuffer({
+        action,
+        channel,
+        files
+    });
+
+    StoreNotifications.add({ text: action === 'copy' ? 'Copied' : 'Cutted' });
+};
+
 export const uploadFiles = async () => {
     const files = await ipcRenderer.invoke('choose-multi', 'files');
     if (!files) return;
@@ -126,7 +196,7 @@ export const uploadFiles = async () => {
 };
 
 // REQUIRED VUE JS CONTEXT
-export const deleteItems = async function (this: any) {
+export const deleteItems = async function (this: any, viaCommand: boolean = false) {
     const channel = getActiveChannel();
     const selectedItems = getSelectedFiles(channel);
     if (!selectedItems.length) return;
@@ -135,7 +205,7 @@ export const deleteItems = async function (this: any) {
         text: `You are sure, you want to delete ${selectedItems.length} items?`,
         accept: {
             text: 'DELETE',
-            event: deleteitems
+            event: () => deleteitems(viaCommand)
         },
         decline: {
             text: 'BACK',
