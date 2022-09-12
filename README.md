@@ -16,7 +16,8 @@
     -   `QICK EDIT` - Max file size is 10 mb
     -   `UPLOAD`
     -   `DOWNLOAD`
-    -   `CREATE`
+    -   `CREATE FILE`
+    -   `CREATE FOLDER`
     -   `CUT`
     -   `COPY`
     -   `PASTE`
