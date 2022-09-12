@@ -67,7 +67,25 @@ export default {
                     foreground: '#D84315',
                     background: 'transparent',
                     cursor: 'rgba(216, 67, 21, 0.3)',
-                    selection: 'rgba(23, 0, 23, .3)'
+                    selection: 'rgba(23, 0, 23, .3)',
+                    white: 'rgba(213, 219, 219, 0.75)',
+                    brightWhite: 'rgb(213, 219, 219)',
+                    yellow: 'rgba(190, 196, 56)',
+                    brightYellow: 'rgb(223, 231, 27)',
+                    brightGreen: 'rgb(87, 221, 138)',
+                    green: 'rgb(48, 187, 100)',
+                    brightCyan: 'rgb(75, 209, 218)',
+                    cyan: 'rgb(47, 159, 166)',
+                    blue: 'rgb(24, 95, 135)',
+                    brightBlue: 'rgb(40, 149, 222)',
+                    brightMagenta: 'rgb(247, 57, 121)',
+                    magenta: 'rgb(224, 47, 107)',
+                    brightRed: 'rgb(193, 52, 30)',
+                    red: 'rgb(193, 52, 30)'
+                    // black: '',
+                    // brightBlack: '',
+                    // cursorAccent: '',
+
                 }
             });
 
@@ -155,6 +173,8 @@ export default {
     &.filled {
         border-radius: 0.75em;
         height: calc(100% - 1em);
+        /* box-shadow: 0 1px 6px color-mod(var(--dark-white-color) a(2%)); */
+        /* background-color: #1B1A1A; */
         background-color: color-mod(var(--dark-white-color) a(2%));
         /* background-image: linear-gradient(129deg, color-mod(var(--dark-white-color) a(1%)), color-mod(var(--main-color) a(1%))); */
         /* border: 1px solid color-mod(var(--main-color) a(15%)); */
