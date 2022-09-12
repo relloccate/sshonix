@@ -17,6 +17,7 @@
     -   `UPLOAD FILES / FOLDERS`
     -   `DOWNLOAD FILES / FOLDERS`
     -   `CREATE FILE / FOLDER`
+    -   `CUT, COPY, PASTE FILE / FOLDER`
     -   `DELETE`
     -   `RENAME`
     -   `COPY PATHS` - Full absolute paths
@@ -33,6 +34,9 @@
     -   `DEL` - Remove selected items
     -   `CTRL + R`, `F5` - Refresh items
     -   `CTRL + A` - Select all items
+    -   `CTRL + C` - Copy items
+    -   `CTRL + X` - Cut items
+    -   `CTRL + V` - Paste items
     -   `ESCAPE` - Deselect all items
     -   `SHIFT + CLICK` - Range items select
     -   `CTRL + CLICK` - Multiple select by one
@@ -54,7 +58,6 @@ If you noticed abnormal behavior or other bug - please, create an issue.
 ### SFTP
 
 -   **File uploading will rewrite an existing files.**
--   **COPY/CUT files/folders not implemented.**
 
 </br>
 </br>
