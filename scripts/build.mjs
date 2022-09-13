@@ -14,8 +14,9 @@ await viteBuild({ configFile: 'src/renderer/vite.config.ts' });
 console.log('\r\n\r\n');
 
 console.log('BUILDING APP');
+
 await electronBuild({
-    // publish: 'always',
+    publish: process.argv.includes('--publish') ? 'always' : 'never',
     config: {
         appId: 'relloccate.sshonix.app',
         asar: true,

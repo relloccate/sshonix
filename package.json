@@ -14,10 +14,16 @@
         "dev": "node scripts/watch.mjs",
         "rebuild": "electron-rebuild -f -w node-pty",
         "xxxx-postinstall": "electron-builder install-app-deps",
-        "pack-app": "vue-tsc --noEmit --p src/renderer/tsconfig.json && node scripts/build.mjs"
+        "pack-app": "vue-tsc --noEmit --p src/renderer/tsconfig.json && node scripts/build.mjs",
+        "pack-app-and-publish": "vue-tsc --noEmit --p src/renderer/tsconfig.json && node scripts/build.mjs --publish"
     },
     "engines": {
         "node": ">=16.0.0"
+    },
+    "author": {
+        "name": "Relloccate",
+        "email": "no-email@no.email",
+        "url": "https://github.com/relloccate"
     },
     "license": "MIT",
     "devDependencies": {
