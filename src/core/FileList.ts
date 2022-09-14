@@ -68,4 +68,45 @@ export default class FileList {
             return [];
         }
     };
+
+    static getLocalFolderEntities = async (from: string) => {
+        const dirs: {
+            relative: string;
+            full: string;
+        }[] = [];
+
+        const files: {
+            relative: string;
+            full: string;
+        }[] = [];
+
+        const scan = async (from: string, to: string) => {
+            try {
+                const entities = await this.getDirectoryFiles(from);
+
+                for await (const file of entities) {
+                    if (file.isDirectory) {
+                        dirs.push({
+                            relative: to + '/' + file.name,
+                            full: file.fullPath
+                        });
+
+                        await scan(file.fullPath, to + '/' + file.name);
+                    } else {
+                        files.push({
+                            relative: to + '/' + file.name,
+                            full: file.fullPath
+                        });
+                    }
+                }
+            } catch (error: any) {}
+        };
+
+        await scan(from, '');
+
+        return {
+            dirs,
+            files
+        };
+    };
 }
