@@ -35,14 +35,18 @@ export default class SftpTransfer extends SftpBase {
         const folders = items.filter(({ type }) => type === 'd');
         const files = items.filter(({ type }) => type === '-');
 
-        for await (const { path, name } of folders) {
-            const localPath = resolve(to, name);
+        for await (const chunk of splitArrayByChunks(folders, 5)) {
+            await Promise.all(
+                chunk.map(async ({ path, name }) => {
+                    const localPath = resolve(to, name);
 
-            await mkdir(localPath, { recursive: true });
-            await this.getDir(path, localPath);
+                    await mkdir(localPath, { recursive: true });
+                    await this.getDir(path, localPath);
+                })
+            );
         }
 
-        for await (const chunk of splitArrayByChunks(files, 25)) {
+        for await (const chunk of splitArrayByChunks(files, 50)) {
             await Promise.all(
                 chunk.map(({ path, name }) => {
                     const localPath = resolve(to, name);
@@ -53,14 +57,18 @@ export default class SftpTransfer extends SftpBase {
     };
 
     upload = async (to: string, items: { folders: string[]; files: string[] }) => {
-        for await (const fullPath of items.folders) {
-            const { name } = parse(fullPath);
+        for await (const chunk of splitArrayByChunks(items.folders, 5)) {
+            await Promise.all(
+                chunk.map(async fullPath => {
+                    const { name } = parse(fullPath);
 
-            await this.client.mkdir(`${to}${name}`, true);
-            await this.putDir(fullPath, `${to}${name}`, true);
+                    await this.client.mkdir(`${to}${name}`, true);
+                    await this.putDir(fullPath, `${to}${name}`, true);
+                })
+            );
         }
 
-        for await (const chunk of splitArrayByChunks(items.files, 25)) {
+        for await (const chunk of splitArrayByChunks(items.files, 50)) {
             await Promise.all(
                 chunk.map(fullPath => {
                     const { name, ext } = parse(fullPath);
@@ -81,7 +89,7 @@ export default class SftpTransfer extends SftpBase {
                 await mkdir(resolve(local, name), { recursive: true });
             }
 
-            for await (const chunk of splitArrayByChunks(files, 25)) {
+            for await (const chunk of splitArrayByChunks(files, 50)) {
                 await Promise.all(
                     chunk.map(({ name }) => {
                         const nextRemote = `${remote}/${name}`;
@@ -160,7 +168,7 @@ export default class SftpTransfer extends SftpBase {
         const files = directoryItems.filter(item => !item.isDirectory);
         const dirs = directoryItems.filter(item => item.isDirectory);
 
-        for await (const chunk of splitArrayByChunks(files, 25)) {
+        for await (const chunk of splitArrayByChunks(files, 50)) {
             await Promise.all(
                 chunk.map(({ fullPath, name }) => {
                     return this.putFile(fullPath, `${pathTo}${name}`);
