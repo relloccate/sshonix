@@ -111,6 +111,10 @@ const StoreActiveSftps = defineStore('StoreActiveSftps', {
                 for (const file of items) {
                     if (file.selected !== selected) {
                         file.selected = selected;
+                        file.renaming = {
+                            status: false,
+                            value: ''
+                        };
                     }
                 }
             }

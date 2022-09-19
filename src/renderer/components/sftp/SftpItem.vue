@@ -9,7 +9,7 @@
                     :value="renaming.value"
                     @input="setRenaming(true, $event.target.value)"
                     @keyup="onRenameInput"
-                    @blur="setRenaming(false, '')"
+                    @blur="onBlur"
                     type="text"
                     class="renaming text-input"
                     placeholder="Input New Name"
@@ -86,6 +86,14 @@ export default {
             }
 
             if (event.code === 'Escape') {
+                this.setRenaming(false, '');
+            }
+        },
+        async onBlur() {
+            if (!this.renaming.status) return;
+            if (this.renaming.value !== this.file.name) {
+                await rename(`${this.currentPath}${this.file.name}`, `${this.currentPath}${this.renaming.value}`);
+            } else {
                 this.setRenaming(false, '');
             }
         },
