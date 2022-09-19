@@ -46,7 +46,7 @@ export const deleteitems = async (viaCommand: boolean = false) => {
     if (viaCommand) {
         await ipcRenderer.invoke('terminal:exec', {
             channel,
-            command: `rm -rf ${items.map(({ path }) => path).join(' ')}`
+            command: `rm -rf ${items.map(({ path }) => `"${path}"`).join(' ')}`
         });
     } else {
         await ipcRenderer.invoke('sftp:delete', {
