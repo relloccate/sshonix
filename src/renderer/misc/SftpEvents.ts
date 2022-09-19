@@ -141,14 +141,14 @@ export const paste = async () => {
     if (buffer.action === 'copy') {
         await ipcRenderer.invoke('terminal:exec', {
             channel,
-            command: `cp -r ${buffer.files.map(({ path }) => `"${path}"`).join(' ')} ${to}`
+            command: `cp -r ${buffer.files.map(({ path }) => `"${path}"`).join(' ')} "${to}"`
         });
     }
 
     if (buffer.action === 'cut') {
         await ipcRenderer.invoke('terminal:exec', {
             channel,
-            command: `mv -f ${buffer.files.map(({ path }) => `"${path}"`).join(' ')} ${to}`
+            command: `mv -f ${buffer.files.map(({ path }) => `"${path}"`).join(' ')} "${to}"`
         });
 
         StoreActiveSftps.setBuffer({
