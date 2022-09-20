@@ -75,6 +75,12 @@ export default {
             });
         }
     },
+    data() {
+        return {
+            // ON BLUR EVENT WILL SEND RENAME SECOND TIME
+            enterPressed: false
+        };
+    },
     methods: {
         getSize() {
             const { size, mark } = bytesToSize(this.file.size);
@@ -82,6 +88,7 @@ export default {
         },
         async onRenameInput(event) {
             if (event.code === 'Enter') {
+                this.enterPressed = true;
                 await rename(`${this.currentPath}${this.file.name}`, `${this.currentPath}${this.renaming.value}`);
             }
 
@@ -90,12 +97,14 @@ export default {
             }
         },
         async onBlur() {
-            if (!this.renaming.status) return;
+            if (!this.renaming.status || this.enterPressed) return;
             if (this.renaming.value !== this.file.name) {
                 await rename(`${this.currentPath}${this.file.name}`, `${this.currentPath}${this.renaming.value}`);
             } else {
                 this.setRenaming(false, '');
             }
+
+            if (this.enterPressed) this.enterPressed = false;
         },
         setRenaming(status, value) {
             StoreActiveSftps.setRenaming(this.channel, this.file, status, value);
