@@ -10,7 +10,7 @@
 # Features
 -   **Multitabs** - Active **Terminal** / **Sftp** pool with fast navigation between tabs
 -   **Terminal**
--   **Sftp** - Super fast downloading / uploading (with no browsing lags)
+-   **Sftp** - Fast downloading / uploading (with no browsing lags)
 -   **Sftp Events**
     -   `REFRESH`
     -   `QICK EDIT` - Max file size is 10 mb
