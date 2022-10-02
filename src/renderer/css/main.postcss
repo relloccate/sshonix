@@ -76,6 +76,8 @@ input::-webkit-inner-spin-button {
     background-color: var(--main-color);
     background-image: linear-gradient(129deg, color-mod(var(--grey-color) a(1%)), color-mod(var(--main-color) a(1%)));
     z-index: 15;
+    animation: fade-up 0.2s var(--ease);
+    max-width: 400px;
 
     &.red {
         background-color: var(--red-color);

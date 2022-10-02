@@ -1,9 +1,8 @@
+import IsVersionAbove from 'front/misc/IsVersionAbove';
 import PiniaInstance from './PiniaInstance';
 import { defineStore } from 'pinia';
 import { APP_RELEASES_URL, APP_VERSION } from 'core/Constants';
 import type { PiniaUpdatesState } from 'types/store';
-
-const transformVersion = (versionString: string) => versionString.split('.').reduce((prev, curr) => `${prev}${curr}`);
 
 export default defineStore('StoreUpdates', {
     state: (): PiniaUpdatesState => {
@@ -21,7 +20,7 @@ export default defineStore('StoreUpdates', {
                     const releases = await response.json();
                     const tagVersion = releases[0].tag_name.slice(1);
 
-                    if (transformVersion(tagVersion) > transformVersion(APP_VERSION)) {
+                    if (IsVersionAbove(tagVersion, APP_VERSION)) {
                         this.isAvailable = true;
                         this.releases = releases;
                     }
@@ -38,13 +37,7 @@ export default defineStore('StoreUpdates', {
     getters: {
         getUpdatableReleases(state) {
             if (APP_VERSION) {
-                const appVersion = transformVersion(APP_VERSION);
-
-                return state.releases.filter(release => {
-                    const releaseVersion = transformVersion(release.tag_name.slice(1));
-
-                    if (releaseVersion > appVersion && !release.draft) return true;
-                });
+                return state.releases.filter(release => IsVersionAbove(release.tag_name.slice(1), APP_VERSION) && !release.draft);
             }
 
             return [];

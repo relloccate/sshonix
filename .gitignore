@@ -3,3 +3,4 @@ dist
 build
 bin
 unused_trash
+tests

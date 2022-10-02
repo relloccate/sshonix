@@ -21,10 +21,12 @@ export type PiniaServersItem = {
             passphrase: string;
         };
     };
+    tags: string[];
+    os: string;
+    mode: 'ssh' | 'sftp' | 'both';
 };
 
 export type PiniaServersState = {
-    isFilled: boolean;
     items: PiniaServersItem[];
 };
 
@@ -35,6 +37,7 @@ export type PiniaActiveTerminalItem = {
     added: number;
     title: string;
     type: 'local' | 'remote';
+    show: 'ssh' | 'sftp' | 'both';
     cwd: string;
     exec: 'powershell.exe' | 'cmd.exe' | 'bash';
 };

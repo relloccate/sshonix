@@ -51,9 +51,8 @@ await electronBuild({
         // },
         publish: {
             provider: 'github',
-            owner: 'assnctr',
-            repo: 'sshonix',
-            private: true
+            owner: 'relloccate',
+            repo: 'sshonix'
         }
     }
 })

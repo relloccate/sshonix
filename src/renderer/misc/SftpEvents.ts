@@ -1,10 +1,24 @@
 import StoreActiveSftps, { getSelectedFiles } from 'front/store/StoreActiveSftps';
 import StoreActiveTerminals from 'front/store/StoreActiveTerminals';
 import StoreNotifications from 'front/store/StoreNotifications';
+import StoreServers from 'front/store/StoreServers';
 import { ipcRenderer } from 'electron';
 
 export const getActiveChannel = () => StoreActiveTerminals.activeTerminal.channel;
 export const getActiveSftpPath = (channel: number) => StoreActiveSftps.items.find(item => item.channel === channel)?.currentPath;
+export const isLinuxCommandsAvailable = (channel: number) => {
+    const added = StoreActiveSftps.items.find(item => item.channel === channel)?.added;
+
+    if (added) {
+        const instance = StoreServers.items.find(item => item.added === added);
+
+        if (instance && instance.os === 'linux' && instance.mode === 'both') {
+            return true;
+        }
+    }
+
+    return false;
+};
 
 export const getSelectedItems = () => {
     let element = StoreActiveSftps.items.find(item => item.channel === getActiveChannel());
@@ -42,8 +56,9 @@ export const refresh = async () => {
 export const deleteitems = async (viaCommand: boolean = false) => {
     const channel = getActiveChannel();
     const items = getSelectedFiles(channel);
+    const isCommands = isLinuxCommandsAvailable(channel);
 
-    if (viaCommand) {
+    if (isCommands && viaCommand) {
         await ipcRenderer.invoke('terminal:exec', {
             channel,
             command: `rm -rf ${items.map(({ path }) => `"${path}"`).join(' ')}`
@@ -101,6 +116,16 @@ export const createFile = async () => {
     await StoreActiveSftps.refresh(channel);
 };
 
+export const upload = async (items: { folders: string[]; files: string[] }, to: string) => {
+    const channel = getActiveChannel();
+
+    ipcRenderer.send('sftp:upload', {
+        channel,
+        to,
+        items
+    });
+};
+
 export const uploadFolders = async () => {
     const folders = await ipcRenderer.invoke('choose-multi', 'folders');
     if (!folders) return;
@@ -118,13 +143,30 @@ export const uploadFolders = async () => {
     });
 };
 
+export const uploadFiles = async () => {
+    const files = await ipcRenderer.invoke('choose-multi', 'files');
+    if (!files) return;
+
+    const channel = getActiveChannel();
+    const to = getActiveSftpPath(channel);
+
+    ipcRenderer.send('sftp:upload', {
+        channel,
+        to,
+        items: {
+            folders: [],
+            files
+        }
+    });
+};
+
 export const rename = async (from: string, to: string) => {
     const channel = getActiveChannel();
 
     await ipcRenderer.invoke('sftp:rename', {
         channel,
         from,
-        to
+        to: `${to.trim()}`
     });
 
     await StoreActiveSftps.refresh(channel);
@@ -165,6 +207,13 @@ export const paste = async () => {
 
 export const setBuffer = (action: 'cut' | 'copy') => {
     const channel = getActiveChannel();
+    const isCommands = isLinuxCommandsAvailable(channel);
+
+    if (!isCommands) {
+        StoreNotifications.add({ text: 'This feature available only on linux servers with SSH + SFTP mode' });
+        return;
+    }
+
     const files = getSelectedFiles(channel);
 
     if (!files) return;
@@ -176,23 +225,6 @@ export const setBuffer = (action: 'cut' | 'copy') => {
     });
 
     StoreNotifications.add({ text: action === 'copy' ? 'Copied' : 'Cutted' });
-};
-
-export const uploadFiles = async () => {
-    const files = await ipcRenderer.invoke('choose-multi', 'files');
-    if (!files) return;
-
-    const channel = getActiveChannel();
-    const to = getActiveSftpPath(channel);
-
-    ipcRenderer.send('sftp:upload', {
-        channel,
-        to,
-        items: {
-            folders: [],
-            files
-        }
-    });
 };
 
 // REQUIRED VUE JS CONTEXT

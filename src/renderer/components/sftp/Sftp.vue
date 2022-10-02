@@ -1,7 +1,7 @@
 <template>
     <div class="sftp">
         <SftpTop :currentPath="sftp.currentPath" :search="sftp.search" />
-        <SftpItems :files="sftp.files" :currentPath="sftp.currentPath" :sort="sftp.sort" :search="sftp.search" />
+        <SftpItems :files="sftp.files" :currentPath="sftp.currentPath" :sort="sftp.sort" :search="sftp.search" :toggleExplorer="toggleExplorer" />
     </div>
 </template>
 <script>
@@ -14,7 +14,8 @@ import { ipcRenderer } from 'electron';
 export default {
     components: { SftpTop, SftpItems },
     props: {
-        sftp: Object
+        sftp: Object,
+        toggleExplorer: Function
     },
     provide() {
         return {

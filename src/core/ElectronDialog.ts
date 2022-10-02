@@ -1,4 +1,5 @@
 import { dialog, ipcMain } from 'electron';
+import FileList from './FileList';
 
 ipcMain.handle('choose-path', async (event, file: boolean) => {
     try {
@@ -12,6 +13,14 @@ ipcMain.handle('choose-path', async (event, file: boolean) => {
         if (path) return path;
     } catch (error) {
         console.error(error);
+    }
+});
+
+ipcMain.handle('get-directory-files', async (event, folder: string) => {
+    try {
+        return await FileList.getDirectoryFiles(folder);
+    } catch (error: any) {
+        return error.message;
     }
 });
 

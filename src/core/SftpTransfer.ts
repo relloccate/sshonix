@@ -13,7 +13,6 @@ export default class SftpTransfer extends SftpBase {
     private errors: string[] = [];
     private transfers: TSftpTransfers = {
         done: [],
-        wait: [],
         inProgress: {}
     };
 
@@ -57,12 +56,14 @@ export default class SftpTransfer extends SftpBase {
     };
 
     upload = async (to: string, items: { folders: string[]; files: string[] }) => {
+        await this.makeDir(to);
+
         for await (const chunk of splitArrayByChunks(items.folders, 5)) {
             await Promise.all(
                 chunk.map(async fullPath => {
                     const { name } = parse(fullPath);
 
-                    await this.client.mkdir(`${to}${name}`, true);
+                    await this.makeDir(`${to}${name}`);
                     await this.putDir(fullPath, `${to}${name}`, true);
                 })
             );

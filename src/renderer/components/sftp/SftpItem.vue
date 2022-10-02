@@ -32,6 +32,7 @@
 import SftpTop from 'front/components/sftp/SftpTop.vue';
 import StoreActiveSftps from 'front/store/StoreActiveSftps';
 import bytesToSize from 'front/misc/BytesToSize';
+import { focusOnElement } from 'front/misc/DOM';
 import { rename } from 'front/misc/SftpEvents';
 
 import FolderSvg from 'front/svg/folder.svg';
@@ -67,13 +68,7 @@ export default {
         currentPath: String
     },
     updated() {
-        // TODO: MOVE THIS AND REMOVE UPDATE METHOD
-        if (this.renaming.status) {
-            this.$nextTick(() => {
-                const input = document.querySelector('.renaming');
-                input.focus();
-            });
-        }
+        if (this.renaming.status) focusOnElement('.renaming');
     },
     data() {
         return {

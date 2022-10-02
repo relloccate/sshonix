@@ -6,7 +6,6 @@ import type { PiniaServersState, PiniaServersItem } from 'types/store';
 const StoreServers = defineStore('StoreServers', {
     state: (): PiniaServersState => {
         return {
-            isFilled: false,
             items: []
         };
     },
@@ -18,10 +17,9 @@ const StoreServers = defineStore('StoreServers', {
     actions: {
         fill(items: PiniaServersItem[]) {
             this.items = items;
-            this.isFilled = true;
         },
         add(data: PiniaServersItem): void {
-            const { title, description, host, port, login, auth } = data;
+            const { title, description, host, port, login, auth, tags, os, mode } = data;
 
             this.items.unshift({
                 added: Date.now(),
@@ -30,7 +28,10 @@ const StoreServers = defineStore('StoreServers', {
                 host,
                 port,
                 login,
-                auth
+                auth,
+                tags,
+                os,
+                mode
             });
         },
         remove(added: PiniaServersItem['added']): void {
@@ -60,6 +61,9 @@ const StoreServers = defineStore('StoreServers', {
                 element.port = data.port;
                 element.login = data.login;
                 element.auth = data.auth;
+                element.tags = data.tags;
+                element.os = data.os;
+                element.mode = data.mode;
             }
         }
     }

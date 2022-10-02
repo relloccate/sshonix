@@ -48,7 +48,7 @@ export type TSftpTransfers = {
     inProgress: {
         [key: string]: string;
     };
-    wait: {
+    wait?: {
         from: string;
         to: string;
     }[];

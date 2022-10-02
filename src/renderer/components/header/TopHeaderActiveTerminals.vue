@@ -1,6 +1,6 @@
 <template>
     <div class="terminals">
-        <div class="terminal" :class="{ active: terminal.active }" v-for="terminal in items" :key="terminal.channel" @click="setActiveTerminal(terminal.channel)">
+        <div class="terminal" :class="{ active: terminal.active }" v-for="terminal in items" :key="terminal.channel" @click="setActive(terminal.channel)">
             <div class="title">{{ terminal.title }}</div>
             <div class="close" v-if="terminal.active" @click="close(terminal.channel)">
                 <CloseSvg />
@@ -12,6 +12,7 @@
 import StoreActiveTerminals from 'front/store/StoreActiveTerminals';
 import StoreActiveSftps from 'front/store/StoreActiveSftps';
 import { storeToRefs } from 'pinia';
+import { focusOnElement } from 'front/misc/DOM';
 
 import CloseSvg from 'front/svg/close.svg';
 
@@ -28,9 +29,14 @@ export default {
             removeSftp(channel);
         };
 
+        const setActive = async channel => {
+            setActiveTerminal(channel);
+            focusOnElement(`[id='${channel}-focus']`);
+        };
+
         return {
             items,
-            setActiveTerminal,
+            setActive,
             close
         };
     }

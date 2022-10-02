@@ -11,7 +11,7 @@ import Notifications from 'front/components/misc/Notifications.vue';
 import Pool from 'front/components/Pool.vue';
 import MenuMain from 'front/components/menu/MenuMain.vue';
 import Footer from 'front/components/footer/Footer.vue';
-import { setRenaming, setSelecting, refresh, deleteItems, setBuffer, paste } from 'front/misc/SftpEvents';
+import { ctrlA, ctrlR } from './misc/KeyboardEvents';
 
 export default {
     components: { TopHeader, Notifications, Pool, MenuMain, Footer },
@@ -30,74 +30,9 @@ export default {
     },
     methods: {
         onKeyDown(event) {
-            if (event.ctrlKey) {
-                // shit === false, to keep electron force reload option in dev mode
-                if (event.shiftKey === false && event.code === 'KeyR') {
-                    event.preventDefault();
-                    refresh();
-                }
-
-                if (event.code === 'KeyA') {
-                    // IF WE IN INPUT - SELECT
-                    try {
-                        // https://stackoverflow.com/questions/28171741/select-all-ctrla-keyboard-button-not-working-for-input-filed-inside-the-html5
-                        event.target?.select();
-                    } catch {
-                        event.preventDefault();
-                        setSelecting(true);
-                    }
-                }
-
-                // CENTER MOUSE
-                if (event.button === 1) {
-                    event.preventDefault();
-                }
-            }
-
-            if (event.code === 'F5') {
-                event.preventDefault();
-                refresh();
-            }
-
-            if (event.code === 'F2') {
-                event.preventDefault();
-                setRenaming(true);
-
-                // this.$nextTick(() => {
-                //     const input = document.querySelector('.renaming');
-                //     input.focus();
-                // });
-            }
-
-            const isConfirmMenuOpened = document.querySelector('.confirm-menu');
-
-            // !event.target?.select - IF WE NOT IN INPUT/TEXTAREA
-            if (!isConfirmMenuOpened && !event.target?.select) {
-                if (event.code === 'Escape') {
-                    event.preventDefault();
-                    setSelecting(false);
-                }
-
-                if (event.code === 'Delete') {
-                    event.preventDefault();
-                    deleteItems.bind(this, true)();
-                }
-
-                if (event.code === 'KeyX') {
-                    event.preventDefault();
-                    setBuffer('cut');
-                }
-
-                if (event.code === 'KeyC') {
-                    event.preventDefault();
-                    setBuffer('copy');
-                }
-
-                if (event.code === 'KeyV') {
-                    event.preventDefault();
-                    paste();
-                }
-            }
+            // JUST PREVENT DEFAULT
+            ctrlR(event);
+            ctrlA(event);
         },
         onMouseDown(event) {
             if (event.ctrlKey && event.button === 1) {

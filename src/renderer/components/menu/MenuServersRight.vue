@@ -57,6 +57,38 @@
                 </div>
             </div>
         </div>
+        <div class="mode-os">
+            <div class="mode">
+                <span>Mode</span>
+                <div class="types">
+                    <label v-tooltip="'Open only SSH connection'">
+                        <input type="radio" class="option-input" v-model="mode" value="ssh" />
+                        <span>SSH</span>
+                    </label>
+                    <label v-tooltip="'Open only SFTP connection'">
+                        <input type="radio" class="option-input" v-model="mode" value="sftp" />
+                        <span>SFTP</span>
+                    </label>
+                    <label v-tooltip="'Open SSH and SFTP connection'">
+                        <input type="radio" class="option-input" v-model="mode" value="both" />
+                        <span>SSH + SFTP</span>
+                    </label>
+                </div>
+            </div>
+            <div class="os">
+                <span>OS</span>
+                <div class="types">
+                    <label v-tooltip="`On linux instances with 'SSH + SFTP' will be available: delete, cut, move, copy via linux commands, which makes working with files much faster`">
+                        <input type="radio" class="option-input" v-model="os" value="linux" />
+                        <span>Linux</span>
+                    </label>
+                    <label>
+                        <input type="radio" class="option-input" v-model="os" value="windows" />
+                        <span>Windows</span>
+                    </label>
+                </div>
+            </div>
+        </div>
         <!-- if the server not added yet (won't show the buttons until the user sets valid creds) || or the added server was selected -->
         <div class="buttons-wrap" v-if="!notValidFields.length || selected > 0">
             <template v-if="!notValidFields.length">
@@ -104,6 +136,9 @@ export default {
                     this.$data.port = data.selectedData.port;
                     this.$data.login = data.selectedData.login;
                     this.$data.auth = data.selectedData.auth;
+                    this.$data.tags = data.selectedData.tags;
+                    this.$data.os = data.selectedData.os;
+                    this.$data.mode = data.selectedData.mode;
                 } else {
                     this.$data.title = '';
                     this.$data.description = '';
@@ -121,6 +156,9 @@ export default {
                             passphrase: ''
                         }
                     };
+                    this.$data.tags = [];
+                    this.$data.os = 'linux';
+                    this.$data.mode = 'both';
                 }
             },
             deep: true
@@ -165,14 +203,17 @@ export default {
                     data: '',
                     passphrase: ''
                 }
-            }
+            },
+            tags: [],
+            os: 'linux',
+            mode: 'both'
         };
     },
     computed: {
         notValidFields() {
             const notValid = [];
 
-            if (!url.test(this.host) && !ipv6.test(this.host) && !ipv4.test(this.host)) {
+            if (!url.test(this.host) && !ipv6.test(this.host) && !ipv4.test(this.host) && this.host !== 'localhost') {
                 notValid.push({ scope: 'host', message: 'Host must be an IPv4, IPv6, URL' });
             }
 
@@ -251,7 +292,10 @@ export default {
                 host: this.host,
                 port: this.port,
                 login: this.login,
-                auth: this.auth
+                auth: this.auth,
+                tags: this.tags,
+                os: this.os,
+                mode: this.mode
             });
 
             this.$emit('delelect');
@@ -338,7 +382,22 @@ export default {
         }
     }
 
+    & .mode-os {
+        display: flex;
+
+        & .mode {
+            width: 50%;
+            border-right: 1px solid color-mod(var(--main-color) a(15%));
+        }
+
+        & .os {
+            width: 50%;
+        }
+    }
+
     & .title,
+    & .mode,
+    & .os,
     & .description,
     & .host-port .host,
     & .host-port .port,
@@ -376,7 +435,9 @@ export default {
         font-size: 1.75em;
     }
 
-    & .auth {
+    & .auth,
+    & .os,
+    & .mode {
         & .types {
             padding: 1.25rem;
             display: flex;

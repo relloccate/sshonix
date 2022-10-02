@@ -8,7 +8,7 @@ export type TFileData = {
     dir: string;
     name: string;
     extension?: string;
-    stat: Stats;
+    stat?: Stats;
 };
 
 type TGetDirectoryFiles = {
@@ -22,54 +22,55 @@ export default class FileList {
      * @returns fullPath and file stat
      */
     static statWrappper = async (fullPath: string) => {
-        return {
-            fullPath,
-            stat: await stat(fullPath)
-        };
-    };
-
-    static getDirectoryFiles = async (directory: string): Promise<TFileData[]> => {
         try {
-            const files = await readdir(directory, { withFileTypes: true });
-            const results: TGetDirectoryFiles = {};
-            const promises = [];
-
-            for (const file of files) {
-                // IMPORTANT, SKIP SYMBOLIC LINKS
-                // TO AVOID BROKEN LINKS TO DIRS
-                // AND NOT PERMITTED HIDDEN WINDOWS LINKS TO DIRS, SUCH AS: "My Videos", "My Music" etc... (these links found in "My Documents")
-                if (!file.isSymbolicLink()) {
-                    const fullPath = resolve(directory, file.name);
-                    const isDirectory = file.isDirectory();
-                    const { ext: extension, dir } = parse(fullPath);
-
-                    /* @ts-ignore */
-                    results[fullPath] = {
-                        isDirectory,
-                        fullPath,
-                        dir,
-                        name: file.name,
-                        ...(!isDirectory ? { extension } : null)
-                    };
-
-                    promises.push(this.statWrappper(fullPath));
-                }
-            }
-
-            const promisesResponse = await Promise.all(promises);
-
-            for (const response of promisesResponse) {
-                results[response.fullPath].stat = response.stat;
-            }
-
-            return Object.values(results);
-        } catch (error) {
-            console.error(error);
-            return [];
+            return {
+                fullPath,
+                stat: await stat(fullPath)
+            };
+        } catch {
+            return {
+                fullPath
+            };
         }
     };
 
-    static getLocalFolderEntities = async (from: string) => {
+    static getDirectoryFiles = async (directory: string): Promise<TFileData[]> => {
+        const files = await readdir(directory, { withFileTypes: true });
+        const results: TGetDirectoryFiles = {};
+        const promises = [];
+
+        for (const file of files) {
+            // IMPORTANT, SKIP SYMBOLIC LINKS
+            // TO AVOID BROKEN LINKS TO DIRS
+            // AND NOT PERMITTED HIDDEN WINDOWS LINKS TO DIRS, SUCH AS: "My Videos", "My Music" etc... (these links found in "My Documents")
+            if (!file.isSymbolicLink()) {
+                const fullPath = resolve(directory, file.name);
+                const isDirectory = file.isDirectory();
+                const { ext: extension, dir } = parse(fullPath);
+
+                /* @ts-ignore */
+                results[fullPath] = {
+                    isDirectory,
+                    fullPath,
+                    dir,
+                    name: file.name,
+                    ...(!isDirectory ? { extension } : null)
+                };
+
+                promises.push(this.statWrappper(fullPath));
+            }
+        }
+
+        const promisesResponse = await Promise.all(promises);
+
+        for (const response of promisesResponse) {
+            results[response.fullPath].stat = response.stat;
+        }
+
+        return Object.values(results);
+    };
+
+    static getLocalDirectoryEntities = async (from: string) => {
         const dirs: {
             relative: string;
             full: string;

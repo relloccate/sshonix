@@ -1,5 +1,7 @@
 export default (bytes: number, merged: boolean = false) => {
     if (bytes === 0) {
+        if (merged) return `0 B`;
+
         return {
             size: 0,
             mark: 'B'

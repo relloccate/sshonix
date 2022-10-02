@@ -72,7 +72,7 @@ const StoreActiveSftps = defineStore('StoreActiveSftps', {
                 }
             }
         },
-        select(channel: PiniaActiveTerminalItem['channel'], file: FileInfo, deselectOthers: boolean = false, ranged: boolean = false) {
+        select(channel: PiniaActiveTerminalItem['channel'], file: FileInfo, deselectOthers: boolean = false) {
             let element = this.items.find(item => item.channel === channel);
 
             if (deselectOthers) {

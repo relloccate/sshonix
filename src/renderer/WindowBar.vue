@@ -67,9 +67,9 @@ export default {
 </script>
 <style lang="postcss" scoped>
 .window-bar {
-    /* position: fixed; */
-    /* z-index: 500; */
-    /* width: 100%; */
+    /* position: fixed;
+    z-index: 500;
+    width: 100%; */
     background-color: var(--back-color);
     height: 3em;
     display: flex;

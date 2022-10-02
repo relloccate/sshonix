@@ -85,7 +85,15 @@ export default {
 
                 const channel = Date.now();
 
-                StoreActiveTerminals.add({ channel, added: data.added, title: data.title, cwd: process.env.HOME, type: 'remote' });
+                StoreActiveTerminals.add({
+                    channel,
+                    added: data.added,
+                    title: data.title,
+                    show: data.mode,
+                    cwd: process.env.HOME,
+                    type: 'remote'
+                });
+
                 StoreActiveSftps.add({ channel, added: data.added });
             }
 

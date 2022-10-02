@@ -1,17 +1,9 @@
 <template>
     <div class="titles">
-        <div class="title-wrap">
-            <span @click="setSort('name')">Name</span>
-        </div>
-        <div class="title-wrap">
-            <span @click="setSort('size')">Size</span>
-        </div>
-        <div class="title-wrap">
-            <span @click="setSort('modifyTime')">Modified</span>
-        </div>
-        <div class="title-wrap">
-            <span @click="setSort('accessTime')">Accessed</span>
-        </div>
+        <SftpItemsTitleWrap title="Name" sortBy="name" :sort="sort" @setSort="setSort" />
+        <SftpItemsTitleWrap title="Size" sortBy="size" :sort="sort" @setSort="setSort" />
+        <SftpItemsTitleWrap title="Modified" sortBy="modifyTime" :sort="sort" @setSort="setSort" />
+        <SftpItemsTitleWrap title="Accessed" sortBy="accessTime" :sort="sort" @setSort="setSort" />
     </div>
     <div class="items scroll-theme" v-if="sortedResults.length" @contextmenu="onContextMenu">
         <SftpItem @selectRange="selectRange" :renaming="file.renaming" :selected="file.selected" :currentPath="currentPath" :file="file.data" v-for="file in sortedResults" :key="file.data.name" />
@@ -23,7 +15,9 @@
 </template>
 <script>
 import SftpItem from 'front/components/sftp/SftpItem.vue';
+import SftpItemsTitleWrap from 'front/components/sftp/SftpItemsTitleWrap.vue';
 import StoreActiveSftps from 'front/store/StoreActiveSftps';
+
 import {
     copyPaths,
     createFile,
@@ -35,21 +29,22 @@ import {
     paste,
     refresh,
     setBuffer,
-    setRenaming,
-    uploadFiles,
-    uploadFolders
+    setRenaming
+    // uploadFiles,
+    // uploadFolders
 } from 'front/misc/SftpEvents';
 
 import EmptySvg from 'front/svg/empty.svg';
 
 export default {
-    components: { SftpItem, EmptySvg },
+    components: { SftpItem, SftpItemsTitleWrap, EmptySvg },
     inject: ['channel'],
     props: {
         sort: Object,
         files: Object,
         search: String,
-        currentPath: String
+        currentPath: String,
+        toggleExplorer: Function
     },
     computed: {
         filtered() {
@@ -144,14 +139,24 @@ export default {
                     label: 'Edit',
                     onClick: getQuickEdit.bind(this)
                 },
-                uploadFiles: {
-                    label: 'Upload Files',
-                    onClick: uploadFiles
+                upload: {
+                    label: 'Upload',
+                    onClick: () => {
+                        this.toggleExplorer(true, 'upload', this.currentPath);
+                    }
                 },
-                uploadFolders: {
-                    label: 'Upload Folders',
-                    onClick: uploadFolders
+                download: {
+                    label: 'Download',
+                    onClick: downloadItems
                 },
+                // uploadFiles: {
+                //     label: 'Upload Files',
+                //     onClick: uploadFiles
+                // },
+                // uploadFolders: {
+                //     label: 'Upload Folders',
+                //     onClick: uploadFolders
+                // },
                 createFile: {
                     label: 'Create File',
                     onClick: createFile
@@ -159,10 +164,6 @@ export default {
                 createFolder: {
                     label: 'Create Folder',
                     onClick: createFolder
-                },
-                download: {
-                    label: 'Download',
-                    onClick: downloadItems
                 },
                 copyPaths: {
                     label: 'Copy Paths',
@@ -209,11 +210,12 @@ export default {
                         ? [
                               events.refresh,
                               ...(this.isEditable() ? [events.edit] : []),
-                              events.uploadFiles,
-                              events.uploadFolders,
+                              events.upload,
+                              events.download,
+                              //   events.uploadFiles,
+                              //   events.uploadFolders,
                               events.createFile,
                               events.createFolder,
-                              events.download,
                               events.delete,
                               events.rename,
                               events.copyPaths,
@@ -223,7 +225,15 @@ export default {
                               ...(isCanPaste ? [events.paste] : [])
                           ]
                         : // if not
-                          [events.refresh, events.uploadFiles, events.uploadFolders, events.createFile, events.createFolder, ...(isCanPaste ? [events.paste] : [])]
+                          [
+                              events.refresh,
+                              events.upload,
+                              //   events.uploadFiles,
+                              //   events.uploadFolders,
+                              events.createFile,
+                              events.createFolder,
+                              ...(isCanPaste ? [events.paste] : [])
+                          ]
             });
         }
     }
@@ -233,47 +243,6 @@ export default {
 .titles {
     display: flex;
     padding: 0 1.25em;
-
-    & .title-wrap {
-        &:nth-child(1) {
-            width: 35%;
-        }
-
-        &:nth-child(2) {
-            width: 25%;
-        }
-
-        &:nth-child(3) {
-            width: 20%;
-        }
-
-        &:nth-child(4) {
-            width: 20%;
-
-            & span {
-                margin-right: 0;
-            }
-        }
-
-        & span {
-            user-select: none;
-            cursor: pointer;
-            display: flex;
-            border-radius: 0.5rem 0.5rem 0 0;
-            font-size: 0.8em;
-            font-weight: 600;
-            background-color: color-mod(var(--grey-color) a(5%));
-            /* border: 1px solid color-mod(var(--main-color) a(15%)); */
-            /* border-bottom: none; */
-            padding: 0.5rem 1rem;
-            color: var(--grey-color);
-            margin: 0 1rem 0 0;
-
-            &:hover {
-                background-color: color-mod(var(--grey-color) a(10%));
-            }
-        }
-    }
 }
 
 .items {

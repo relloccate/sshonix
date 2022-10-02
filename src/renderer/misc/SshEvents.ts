@@ -9,6 +9,7 @@ export const initializeLocalTerminal = () => {
         active: true,
         added: channel,
         title: 'LOCAL',
+        show: 'ssh',
         cwd: HOME_DIR,
         exec: 'powershell.exe',
         type: 'local'

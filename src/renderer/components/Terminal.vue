@@ -85,7 +85,6 @@ export default {
                     // black: '',
                     // brightBlack: '',
                     // cursorAccent: '',
-
                 }
             });
 
@@ -132,7 +131,7 @@ export default {
         getSizes() {
             const { width, height } = document.querySelector('.pool-wrap:not([style*="display: none"])').getBoundingClientRect();
 
-            const nextWidth = width; // just to be
+            const nextWidth = width - 18; // just to be
             const nextHeight = height - 96;
 
             const cols = Number((nextWidth / 8).toFixed(0));
