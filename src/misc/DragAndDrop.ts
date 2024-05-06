@@ -25,6 +25,7 @@ const getItems = (dataTransfer: DataTransfer) => {
 
 export const dropHandler = (ev: DragEvent, to: string, invoke: Function) => {
     ev.preventDefault();
+    ev.stopPropagation();
 
     if (ev.dataTransfer?.items) {
         const items = getItems(ev.dataTransfer);

@@ -8,7 +8,7 @@
     <div class="drag-there" v-if="showDrag && sortedResults.length > 0" @dragover="dragOverHandler" @drop="dropHandler($event, currentPath, $emit('onDragEnd'))">
         <p>Drop There</p>
     </div>
-    <div class="items scroll-theme" v-if="sortedResults.length > 0" @contextmenu="onContextMenu" @dragover="dragOverHandler">
+    <div class="items scroll-theme" v-if="sortedResults.length > 0" @contextmenu="onContextMenu" @dragover="dragOverHandler" @drop="dropHandler($event, currentPath, $emit('onDragEnd'))">
         <SftpItem
             @selectRange="selectRange"
             @onDragEnd="$emit('onDragEnd')"
