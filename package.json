@@ -1,0 +1,57 @@
+{
+    "name": "sshonix",
+    "version": "0.3.0",
+    "description": "Hi-End SSH & SFTP client. Focused on UX/UI experience and Performance.",
+    "main": "dist-electron/main/index.js",
+    "license": "MIT",
+    "author": {
+        "name": "Relloccate",
+        "email": "no-email@no.email",
+        "url": "https://github.com/relloccate"
+    },
+    "keywords": [
+        "ssh",
+        "terminal",
+        "sftp",
+        "ssh-client",
+        "sftp-client"
+    ],
+    "debug": {
+        "env": {
+            "VITE_DEV_SERVER_URL": "http://127.0.0.1:3344/"
+        }
+    },
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build && electron-builder",
+        "rebuild": "electron-rebuild -f -w node-pty",
+        "xxxx-postinstall": "electron-builder install-app-deps",
+        "preview": "vite preview",
+        "---build": "vue-tsc --noEmit --p src/renderer/tsconfig.json && node scripts/build.mjs",
+        "---build-and-publish": "vue-tsc --noEmit --p src/renderer/tsconfig.json && node scripts/build.mjs --publish"
+    },
+    "devDependencies": {
+        "@types/ssh2-sftp-client": "^9.0.3",
+        "@vitejs/plugin-vue": "^5.0.4",
+        "electron": "30.0.1",
+        "electron-builder": "^24.13.3",
+        "pinia": "^2.1.7",
+        "postcss-color-mod-function": "^3.0.3",
+        "postcss-preset-env": "^9.5.9",
+        "typescript": "^5.4.5",
+        "vite": "^5.2.10",
+        "vite-plugin-electron": "^0.28.6",
+        "vite-plugin-electron-renderer": "^0.14.5",
+        "vite-svg-loader": "^5.1.0",
+        "vue": "^3.4.25",
+        "vue-tsc": "^2.0.14",
+        "vue-router": "^4.3.2",
+        "@xterm/addon-web-links": "^0.11.0",
+        "@xterm/xterm": "^5.5.0"
+    },
+    "dependencies": {
+        "node-pty": "^1.0.0",
+        "ssh2": "^1.15.0",
+        "ssh2-sftp-client": "^10.0.3"
+    }
+}

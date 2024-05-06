@@ -1,0 +1,5 @@
+<svg viewBox="0 0 490 492">
+    <line x1="470" y1="20" x2="113" y2="20" fill="none" stroke="#d84315" stroke-linecap="round" stroke-miterlimit="10" stroke-width="40" />
+    <line x1="470" y1="23" x2="470" y2="380" fill="none" stroke="#d84315" stroke-linecap="round" stroke-miterlimit="10" stroke-width="40" />
+    <rect x="20" y="90" width="380" height="380" rx="47" fill="none" stroke="#d84315" stroke-miterlimit="10" stroke-width="40" />
+</svg>
