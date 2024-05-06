@@ -3,9 +3,9 @@
 </p>
 </br>
 
-  <img src="./public/screens/1.png">
-  <img src="./public/screens/2.png">
-  <img src="./public/screens/3.png">
+  <img src="./public/screens/v0.1.1/1.png">
+  <img src="./public/screens/v0.1.1/2.png">
+  <img src="./public/screens/v0.1.1/3.png">
   
 # Features
 -   **Multitabs** - Active **Terminal** / **Sftp** pool with fast navigation between tabs
@@ -70,5 +70,5 @@ If you noticed abnormal behavior or other bug - please, create an issue.
 
 # Other Screens
 
-  <img src="./public/screens/4.png">
-  <img src="./public/screens/5.png">
+  <img src="./public/screens/v0.1.1/4.png">
+  <img src="./public/screens/v0.1.1/5.png">
