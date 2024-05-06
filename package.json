@@ -23,12 +23,11 @@
     },
     "scripts": {
         "dev": "vite",
-        "build": "vite build && electron-builder",
+        "build": "node scripts/build.mjs",
+        "build-and-publish": " node scripts/build.mjs --publish",
         "rebuild": "electron-rebuild -f -w node-pty",
-        "xxxx-postinstall": "electron-builder install-app-deps",
-        "preview": "vite preview",
-        "---build": "vue-tsc --noEmit --p src/renderer/tsconfig.json && node scripts/build.mjs",
-        "---build-and-publish": "vue-tsc --noEmit --p src/renderer/tsconfig.json && node scripts/build.mjs --publish"
+        "postinstall": "electron-builder install-app-deps",
+        "preview": "vite preview"
     },
     "devDependencies": {
         "@types/ssh2-sftp-client": "^9.0.3",
