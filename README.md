@@ -3,15 +3,21 @@
 </p>
 </br>
 
-  <img src="./public/screens/v0.1.1/1.png">
-  <img src="./public/screens/v0.1.1/2.png">
-  <img src="./public/screens/v0.1.1/3.png">
-  
+  <img src="./public/screens/v0.3.0/1.png">
+  <img src="./public/screens/v0.3.0/2.png">
+
 # Features
--   **Multitabs** - Active **Terminal** / **Sftp** pool with fast navigation between tabs
--   **Terminal**
--   **Sftp** - Fast downloading / uploading (with no browsing lags)
--   **Sftp Events**
+
+-   Also works as Standalone **SFTP** or **SSH** client.
+-   Fast navigation between tabs
+-   Update notifications.
+
+## sFTP
+
+-   Fast downloading / uploading (with no browsing lags)
+-   Support of most file manipulation hotkeys
+
+-   **Events**
     -   `REFRESH`
     -   `QICK EDIT` - Max file size is 10 mb
     -   `UPLOAD`
@@ -25,9 +31,8 @@
     -   `RENAME`
     -   `COPY PATHS` - Copy full absolute paths of files/folders to clipboard
     -   `COPY NAMES` - Copy names of files/folders to clipboard
--   **Sftp Transfers** - Displays **Active Transfers**, **Done Transfers** and **Transfers Errors**
--   **Sftp Search** - Regex (via js **RegExp**) search by **File**/**Folder** name in the current list
--   **Updates** - Update notifications.
+-   **Transfers** - Displays **Active Transfers**, **Done Transfers** and **Transfers Errors**
+-   **Search** - Regex (via js **RegExp**) search by **File**/**Folder** name in the current list
 
 # Hotkeys
 
@@ -54,8 +59,6 @@
 
 **WINDOWS ONLY!**  
 </br>
-The project is new. A lot of things haven't been done yet.  
-More attention was paid to the SFTP, the terminal has a low level of development.  
 If you noticed abnormal behavior or other bug - please, create an issue.
 
 ### SFTP
@@ -68,7 +71,8 @@ If you noticed abnormal behavior or other bug - please, create an issue.
 </br>
 </br>
 
-# Other Screens
+# Other Screens (v0.1.1)
 
+  <img src="./public/screens/v0.1.1/2.png">
   <img src="./public/screens/v0.1.1/4.png">
   <img src="./public/screens/v0.1.1/5.png">
